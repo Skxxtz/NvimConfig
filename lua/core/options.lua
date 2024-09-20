@@ -30,7 +30,7 @@ vim.wo.relativenumber = true
 
 -- Enable syntax highlighting
 vim.cmd('syntax on')
-    
+
 -- Set conceal level
 vim.opt.conceallevel = 2
 
@@ -45,4 +45,5 @@ vim.cmd([[
   augroup END
 ]])
 
+vim.cmd('autocmd FileType html,vue,django,javascript setlocal filetype=html')
 

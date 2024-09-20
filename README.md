@@ -35,6 +35,8 @@
 | n | | P | Paste in line above from internal buffer |
 | n | | y | Yank into internal buffer |
 | n | | s | Remove char under cursor and enter insert mode |
+| n | | di | Delete inside of following delimiter |
+| n | | va | Remove the whole block with delimiter and inside |
 
 ### Movement
 | Mode | Modifier | Bind | Explanation |
@@ -55,6 +57,8 @@
 | n | | % | Go to closing/opening brackets |
 | n | | { | Go to start of block|
 | n | | } | Go to end of block|
+| n | | zz | Bring cursor to middle without movin lines |
+
 
 ### Visual Mode
 | Mode | Modifier | Bind | Explanation |
@@ -62,6 +66,8 @@
 | n | | v | Enter visual mode |
 | n | | V | Enter whole line visual mode |
 | n | Ctrl | v | Enter visual block mode |
+| n | | vi | Select inside of following delimiter |
+| n | | va | Select the whole block with delimiter and inside |
 
 ### : Commands
 | Mode | Modifier | Bind | Explanation |

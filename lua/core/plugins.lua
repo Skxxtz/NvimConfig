@@ -2,6 +2,9 @@ require("lazy").setup({
     { "EdenEast/nightfox.nvim", name = "nightfox", priority = 998 },
     { "catppuccin/nvim", name = "catppuccin", priority = 999 },
     { "rose-pine/nvim", name = "rose-pine", priority = 1000 },
+
+
+
     "tpope/vim-commentary",
     "mattn/emmet-vim",
     "nvim-tree/nvim-web-devicons",
@@ -11,7 +14,7 @@ require("lazy").setup({
     "vim-test/vim-test",
     "lewis6991/gitsigns.nvim",
     "tpope/vim-fugitive",
-    "tpope/vim-surround",
+    'tpope/vim-surround',
     "theprimeagen/harpoon",
     {"lukas-reineke/indent-blankline.nvim", main="ibl", opts={}},
     -- completion

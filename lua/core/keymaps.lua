@@ -15,6 +15,10 @@ vim.keymap.set("n", "K", "i<CR><Esc>k$")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+
+-- Jump to top/bottom with cursor in middle
+vim.keymap.set("n", "G", "Gzz")
+
 -- Paste without losing pasted word
 vim.keymap.set("x", "<leader>p", "\"_dP")
 
