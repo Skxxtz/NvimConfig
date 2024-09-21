@@ -47,3 +47,4 @@ vim.cmd([[
 
 vim.cmd('autocmd FileType html,vue,django,javascript setlocal filetype=html')
 
+

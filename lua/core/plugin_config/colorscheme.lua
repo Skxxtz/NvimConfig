@@ -5,7 +5,6 @@ require("catppuccin").setup({
         comments = { "italic" }, -- Change the style of comments
     },
 })
-
 require("rose-pine").setup({
     variant = "auto",
     dark_variant = "main",
@@ -27,43 +26,34 @@ vim.o.background = "dark"
 
 local timer_id = nil
 
-local themes = {
-    "catppuccin",
-    "rose-pine",
-    "nightfox",
-}
 
 if vim.g.current_theme == nil then
     vim.g.current_theme = 3
 end
 
 function ChangeTheme()
-    vim.g.current_theme = (vim.g.current_theme % #themes) + 1
-    LoadTheme()
+    vim.g.current_theme = (vim.g.current_theme % #THEMES) + 1
+    LoadTheme(true)
 end
-
-
 
 function ClearTerm()
     vim.cmd[[:echo ""]]
     timer_id = nil
 end
 
-function LoadTheme()
-    local theme = themes[vim.g.current_theme]
+function LoadTheme(print_output)
+    local theme = THEMES[vim.g.current_theme]
     vim.cmd("colorscheme " .. theme)
-    print("Theme set to " .. theme)
-    if timer_id then
-        timer_id:stop()
-        timer_id = nil
+    if print_output then
+        print("Theme set to " .. theme)
+        if timer_id then
+            timer_id:stop()
+            timer_id = nil
+        end
+        timer_id = vim.defer_fn(function ()
+            ClearTerm();
+        end, 500)
     end
-    timer_id = vim.defer_fn(function ()
-        ClearTerm();
-    end, 500)
 end
 
-
-
-
-
-LoadTheme();
+LoadTheme(false);
