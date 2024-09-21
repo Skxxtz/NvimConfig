@@ -17,6 +17,8 @@
 | n | | q | Record macro into buffer |
 | n | | @buffer | Replace buffer |
 | n | | = | Indent line(s) |
+| n | | u | Undo |
+| n | Ctrl | r | Redo |
 
 ### Replacing and Deleting
 | Mode | Modifier | Bind | Explanation |
