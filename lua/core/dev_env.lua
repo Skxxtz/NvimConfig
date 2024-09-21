@@ -1,2 +1,2 @@
-CPP_COMPILER = "g++" -- or clang++
+CPP_COMPILER = "g++" -- "clang++"
 PLATFORM = os.getenv("OS")

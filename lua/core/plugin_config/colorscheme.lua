@@ -27,8 +27,6 @@ require("nightfox").setup({
 table.insert(THEMES, "nightfox")
 REVERSE_THEME["nightfox"] = #THEMES
 
-vim.o.termguicolors = true
-vim.o.background = "dark"
 
 
 

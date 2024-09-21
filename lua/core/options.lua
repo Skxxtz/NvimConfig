@@ -4,6 +4,11 @@ vim.g.maplocalleader = ' '
 vim.g.netrw_wrowse_split = 0
 vim.g.netrw_banner = 0
 
+
+
+vim.o.termguicolors = true
+vim.o.background = "dark"
+
 vim.opt.backspace = '2'
 vim.opt.showcmd = true
 vim.opt.cursorline = true
