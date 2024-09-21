@@ -25,6 +25,9 @@ table.insert(THEMES, "rose-pine")
 REVERSE_THEME["rose-pine"] = #THEMES
 
 
+
+
+
 --  NIGHTFOX THEME: https://github.com/EdenEast/nightfox.nvim
 --  VARIANTS: night, day, dawn, dusk, carbon
 require("nightfox").setup({
@@ -38,8 +41,14 @@ REVERSE_THEME["nightfox"] = #THEMES
 table.insert(THEMES, "carbonfox")
 REVERSE_THEME["carbonfox"] = #THEMES
 
+
+
+
 -- WHITEOUT THEME:
 table.insert(THEMES, "whiteout")
 REVERSE_THEME["whiteout"] = #THEMES
 
 
+-- ZELLNER THEME:
+table.insert(THEMES, "zellner")
+REVERSE_THEME["zellner"] = #THEMES

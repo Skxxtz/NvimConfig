@@ -4,7 +4,6 @@ require("lazy").setup({
     { "rose-pine/nvim", name = "rose-pine", priority = 1000 },
 
 
-
     "tpope/vim-commentary",
     "mattn/emmet-vim",
     "nvim-tree/nvim-web-devicons",
