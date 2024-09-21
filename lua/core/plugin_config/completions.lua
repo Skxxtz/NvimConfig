@@ -1,7 +1,7 @@
 local cmp = require("cmp")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-
 require("luasnip.loaders.from_vscode").lazy_load()
+
 cmp.setup({
     completion = {
         completeopt = 'menu,menuone,noinsert',

@@ -1,17 +1,17 @@
 require("mason-lspconfig").setup({
-    ensure_installed = { "lua_ls", "eslint", "pyright", "tailwindcss", "rust_analyzer", "clangd"}
+    ensure_installed = { "lua_ls", "eslint", "pyright", "tailwindcss", "rust_analyzer", "clangd" }
 })
 
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
 
 lsp_defaults.capabilities = vim.tbl_deep_extend(
-'force',
-lsp_defaults.capabilities,
-require('cmp_nvim_lsp').default_capabilities()
+    'force',
+    lsp_defaults.capabilities,
+    require('cmp_nvim_lsp').default_capabilities()
 )
 
-require("lspconfig").lua_ls.setup {
+lspconfig.lua_ls.setup {
     settings = {
         Lua = {
             diagnostics = {
@@ -26,14 +26,12 @@ require("lspconfig").lua_ls.setup {
         },
     }
 }
-
-require("lspconfig").eslint.setup({})
-require("lspconfig").cssls.setup({})
-require("lspconfig").html.setup({})
-require("lspconfig").tailwindcss.setup({})
-require("lspconfig").rust_analyzer.setup({})
-require("lspconfig").clangd.setup({})
-
+lspconfig.eslint.setup({})
+lspconfig.cssls.setup({})
+lspconfig.html.setup({})
+lspconfig.tailwindcss.setup({})
+lspconfig.rust_analyzer.setup({})
+lspconfig.clangd.setup({})
 
 
 vim.api.nvim_create_autocmd('LspAttach', {
