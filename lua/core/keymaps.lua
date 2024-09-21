@@ -53,6 +53,34 @@ vim.keymap.set("n", "<leader>gc", function ()
     end, 500)
 end, { silent = true })
 
+
+-- Compiler Commands
+vim.keymap.set("n", "<leader>ö", function ()
+  local cfile = vim.fn.expand("%:t:r")
+  local extension = vim.fn.expand("%:t:e")
+  if extension == "rs" then
+    vim.cmd[[!cargo run]]
+  elseif extension == "cpp" then
+    -- local command = string.format("! %s.exe", cfile)
+    local command = string.format("! ./%s", cfile)
+    vim.cmd(command)
+  end
+end)
+
+vim.keymap.set("n", "<leader>ü", function ()
+  local current_file = vim.fn.expand("%:t")
+  local cfile = vim.fn.expand("%:t:r")
+  local extension = vim.fn.expand("%:t:e")
+  if extension == "rs" then
+    vim.cmd[[!cargo build]]
+  elseif extension == "cpp" then
+    -- local command = string.format("clang++ %s -o %s.exe", current_file, cfile)
+    local command = string.format("! g++ %s -o %s", current_file, cfile)
+    vim.cmd(command)
+  end
+end)
+
+
 vim.keymap.set("n", "<leader>gp", function ()
     vim.fn.system("git push");
     print("Changed pushed.")
