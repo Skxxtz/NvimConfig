@@ -1,14 +1,29 @@
-THEMES = {"catppuccin", "rose-pine", "nightfox"}
-DEFAULT_THEME = "nightfox"
 TIMER_ID = nil
 
-local reverse_theme = {
-    ["catppuccin"] = 1,
-    ["rose-pine"] = 2,
-    ["nightfox"] = 3,
-}
+THEMES = {}
+REVERSE_THEME = {}
+DEFAULT_THEME = "nightfox"
 
 
+function ReadTheme()
+    local path = vim.fn.expand('%:p:h') .. "/lua/core/theme.txt"
+    local file = io.open(path, "r")
+    if file then
+        local theme = file:read("*l")
+        file:close()
+        return tonumber(theme)
+    else
+        print("No such file")
+    end
+end
+
+function WriteTheme(index)
+    local path = vim.fn.expand('%:p:h') .. "/lua/core/theme.txt"
+    local file = io.open(path, "w")
+    if file then
+        file:write(index)
+    end
+end
 
 function ClearTerm()
     vim.cmd[[:echo ""]]
@@ -26,6 +41,20 @@ function AddOrReplaceTimer(time, func)
     end, time)
 end
 
+function LoadTheme(params)
+    local index = params.index or ""
+    local name = params.name or ""
+
+    if name then
+        index = REVERSE_THEME[name]
+    end
+    if index then
+        WriteTheme(index)
+        vim.g.current_theme = index
+        vim.cmd("colorscheme " .. name)
+    end
+end
+
 
 vim.api.nvim_create_user_command("Theme", function (opts)
     local args = vim.split(opts.args, " ");
@@ -34,9 +63,7 @@ vim.api.nvim_create_user_command("Theme", function (opts)
         print(THEMES[vim.g.current_theme])
         AddOrReplaceTimer(750, ClearTerm)
     else
-        local index = reverse_theme[theme]
-        vim.g.current_theme = index
-        vim.cmd("colorscheme " .. theme)
+        LoadTheme({name=theme})
     end
 
 end, {
@@ -44,5 +71,6 @@ nargs = "*",
 complete = function (_,_,_)
     return THEMES
 end})
+
 
 

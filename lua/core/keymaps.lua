@@ -74,7 +74,7 @@ vim.keymap.set("n", "<leader>ü", function ()
   if extension == "rs" then
     vim.cmd[[!cargo build]]
   elseif extension == "cpp" then
-    -- local command = string.format("clang++ %s -o %s.exe", current_file, cfile)
+    -- local command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
     local command = string.format("! g++ %s -o %s", current_file, cfile)
     vim.cmd(command)
   end
@@ -90,9 +90,6 @@ vim.keymap.set("n", "<leader>gp", function ()
 end, { silent = true})
 
 
-vim.keymap.set("n", "<Tab>", function ()
-    ChangeTheme();
-end)
 -- Unbind Q
 vim.keymap.set("n", "Q", "<nop>")
 

@@ -1,4 +1,5 @@
-vim.g.mapleader = ' ' vim.g.maplocalleader = ' '
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 vim.g.netrw_wrowse_split = 0
 vim.g.netrw_banner = 0
@@ -14,19 +15,28 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
 
+
+-- set completion height
 vim.opt.pumheight = 5
 
 
-vim.cmd [[ set noswapfile ]] vim.cmd [[ set termguicolors ]]
+vim.cmd [[ set noswapfile ]]
+vim.cmd [[ set termguicolors ]]
+
 -- disables the auto line break for .html and .js files
-vim.cmd[[ autocmd BufRead,BufNewFile *.html,*.js set nowrap ]]
-vim.cmd[[ autocmd BufRead,BufNewFile *.html setlocal filetype=html ]]
+vim.cmd [[ autocmd BufRead,BufNewFile *.html,*.js set nowrap ]]
+vim.cmd [[ autocmd BufRead,BufNewFile *.html setlocal filetype=html ]]
 
 --Line numbers
 vim.wo.number = true
 vim.wo.relativenumber = true
 
 
+-- Initialize Themes
+if vim.g.current_theme == nil then
+    vim.g.current_theme = ReadTheme()
+end
+vim.cmd("Theme " .. THEMES[vim.g.current_theme])
 
 -- Enable syntax highlighting
 vim.cmd('syntax on')
@@ -46,5 +56,3 @@ vim.cmd([[
 ]])
 
 vim.cmd('autocmd FileType html,vue,django,javascript setlocal filetype=html')
-
-
