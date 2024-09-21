@@ -44,7 +44,7 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Git keybind
 vim.keymap.set("n", "<leader>gc", function ()
-  vim.fn.system("git add .");
+    vim.fn.system("git add .");
     local commit = vim.fn.input("commit message: ");
     vim.fn.system(string.format('git commit -m "%s"', commit));
     print("Changed committed.");
@@ -56,28 +56,36 @@ end, { silent = true })
 
 -- Compiler Commands
 vim.keymap.set("n", "<leader>ö", function ()
-  local cfile = vim.fn.expand("%:t:r")
-  local extension = vim.fn.expand("%:t:e")
-  if extension == "rs" then
-    vim.cmd[[!cargo run]]
-  elseif extension == "cpp" then
-    -- local command = string.format("! %s.exe", cfile)
-    local command = string.format("! ./%s", cfile)
-    vim.cmd(command)
-  end
+    local cfile = vim.fn.expand("%:t:r")
+    local extension = vim.fn.expand("%:t:e")
+    if extension == "rs" then
+        vim.cmd[[!cargo run]]
+    elseif extension == "cpp" then
+        local command
+        if PLATFORM == "Windows_NT" then
+            command = string.format("! %s.exe", cfile)
+        else
+            command = string.format("! ./%s", cfile)
+        end
+        vim.cmd(command)
+    end
 end)
 
 vim.keymap.set("n", "<leader>ü", function ()
-  local current_file = vim.fn.expand("%:t")
-  local cfile = vim.fn.expand("%:t:r")
-  local extension = vim.fn.expand("%:t:e")
-  if extension == "rs" then
-    vim.cmd[[!cargo build]]
-  elseif extension == "cpp" then
-    -- local command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
-    local command = string.format("! g++ %s -o %s", current_file, cfile)
-    vim.cmd(command)
-  end
+    local current_file = vim.fn.expand("%:t")
+    local cfile = vim.fn.expand("%:t:r")
+    local extension = vim.fn.expand("%:t:e")
+    if extension == "rs" then
+        vim.cmd[[!cargo build]]
+    elseif extension == "cpp" then
+        local command
+        if CPP_COMPILER == "clang++" then
+            command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
+        elseif CPP_COMPILER == "g++" then
+            command = string.format("! g++ %s -o %s", current_file, cfile)
+        end
+        vim.cmd(command)
+    end
 end)
 
 
