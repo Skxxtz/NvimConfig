@@ -37,14 +37,11 @@ function StartupScreen()
         vim.cmd(string.format([[
         augroup MouseScrollSetting
         autocmd!
-        autocmd BufEnter <buffer=%d> setlocal nonumber
-        autocmd BufLeave <buffer=%d> setlocal number
-        autocmd BufEnter <buffer=%d> setlocal norelativenumber
-        autocmd BufLeave <buffer=%d> setlocal relativenumber
-        autocmd BufEnter <buffer=%d> setlocal mousescroll=ver:0,hor:0
-        autocmd BufLeave <buffer=%d> setlocal mousescroll=ver:1,hor:1
+        autocmd BufWinLeave <buffer=%d> setlocal nonumber
+        autocmd BufWinLeave <buffer=%d> setlocal relativenumber
+        autocmd BufWinLeave <buffer=%d> setlocal mousescroll=ver:1,hor:1
         augroup END
-        ]], buffer, buffer, buffer, buffer, buffer, buffer ))
+        ]], buffer, buffer, buffer))
 
 
         local header_image = get_header()
@@ -64,8 +61,9 @@ function StartupScreen()
         local options = {
             "OPTIONS",
             "",
-            "<leader> ff    Find Files",
-            "<leader> fg    Find String",
+            "<leader> oc    Open Configs",
+            "<leader> ff    Find Files  ",
+            "<leader> fg    Find String ",
         }
         local line_count = #header_image + #signiture
         ShowLines(header_image)
@@ -78,6 +76,7 @@ function StartupScreen()
         vim.wo.cursorline = false
         vim.cmd("setlocal nomodifiable")
 
+
         local function on_enter()
             local line = vim.fn.line(".")
             if line == 100 then
@@ -87,6 +86,11 @@ function StartupScreen()
 
         vim.keymap.set("n", "<CR>", function ()
             on_enter()
+        end, { buffer = 0, noremap = true, silent = true })
+
+        vim.keymap.set("n", "<leader>oc", function ()
+            vim.cmd("cd " .. vim.fn.stdpath("config"))
+            vim.cmd(":Ex")
         end, { buffer = 0, noremap = true, silent = true })
 
         vim.bo[buffer].modifiable = false

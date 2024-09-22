@@ -12,9 +12,13 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+-- ENVS
+CPP_COMPILER = "g++" -- "clang++"
+PLATFORM = os.getenv("OS")
+STARTUP_IMAGE = "Tree"
 
 
-require("core.dev_env")
+
 require("core.commands")
 require("core.keymaps")
 require("core.plugins")

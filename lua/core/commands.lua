@@ -6,7 +6,7 @@ DEFAULT_THEME = "nightfox"
 
 
 function ReadTheme()
-    local path = vim.fn.stdpath("config") .. "/lua/core/theme.txt"
+    local path = vim.fn.stdpath("config") .. "/data/theme.txt"
     local file = io.open(path, "r")
     if file then
         local theme = file:read("*l")
@@ -18,7 +18,7 @@ function ReadTheme()
 end
 
 function WriteTheme(index)
-    local path = vim.fn.stdpath("config") .. "/lua/core/theme.txt"
+    local path = vim.fn.stdpath("config") .. "/data/theme.txt"
     local file = io.open(path, "w")
     if file then
         file:write(index)
