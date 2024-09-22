@@ -1,7 +1,8 @@
 require("custom_plugins.startup.headers")
 
 local function CenterString(str, w)
-    local pad = math.max(0, math.floor((w - #str) / 2))
+    local display_width = vim.fn.strwidth(str)
+    local pad = math.max(0, math.floor((w - display_width) / 2))
     return string.rep(" ", pad) .. str
 end
 
@@ -22,7 +23,7 @@ local function ColorLinesVert(line_count)
 end
 
 local function ColorLinesHor(line_count, col_end)
-    vim.api.nvim_set_hl(0, "Green", { fg = "#24B364" })
+    vim.api.nvim_set_hl(0, "Green", { fg = "#24B364"})
     for i = 0, line_count do
         vim.api.nvim_buf_add_highlight(0, -1, "Green", i, 0, col_end)
     end
@@ -59,7 +60,7 @@ local function Draw(width, height, header_image, signiture, padding, options)
         local options_width = GetMaxWidth(options)
         local image_width = math.max(header_image_width, signiture_width)
         local side_padding = math.floor((width - (image_width + options_width)) / 3)
-        local middle = 1.5 * side_padding + header_image_width
+        local middle =  width / 2
 
         for _,line in ipairs(header_image) do
             local centered_line = CenterString(line, middle)
@@ -72,7 +73,7 @@ local function Draw(width, height, header_image, signiture, padding, options)
             table.insert(new_image, centered_line)
         end
         for _,line in ipairs(options) do
-            local centered_line = CenterString(line, (width - middle))
+            local centered_line = CenterString(line,  middle / 2)
             table.insert(new_options, centered_line)
         end
         for i = 1, math.max(#new_image, #new_options) do
@@ -131,12 +132,12 @@ function StartupScreen()
         local options = {
             "",
             "",
-            "OPTIONS",
-            "",
-            "<leader> oc    Open Configs  ",
-            "<leader> or    Open README.MD",
-            "<leader> ff    Find Files    ",
-            "<leader> fg    Find String   ",
+            "╭─OPTIONS───────────────────────╮",
+            "│ <leader> oc    Open Configs   │",
+            "│ <leader> or    Open README.MD │",
+            "│ <leader> ff    Find Files     │",
+            "│ <leader> fg    Find String    │",
+            "╰───────────────────────────────╯",
         }
 
         local width = vim.fn.winwidth(0)
