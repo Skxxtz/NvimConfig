@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 CPP_COMPILER = "g++" -- "clang++"
 PLATFORM = os.getenv("OS")
 STARTUP_IMAGE = "Tree"
+STARTUP_SIGNITURE = "Squirly"
 
 
 

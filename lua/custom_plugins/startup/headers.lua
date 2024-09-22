@@ -76,3 +76,19 @@ end
 
 
 
+
+function GetSigniture()
+    local squirly = {
+            "┳┓ ┓┏ ┳ ┳┳┓",
+            "┃┃ ┃┃ ┃ ┃┃┃",
+            "┛┗ ┗┛ ┻ ┛ ┗",
+    }
+
+    local header_signiture
+    if STARTUP_SIGNITURE == "Squirly" then
+        header_signiture = squirly
+    else
+        header_signiture = squirly
+    end
+    return header_signiture
+end

@@ -108,11 +108,15 @@ local function Draw(width, height, header_image, signiture, padding, options)
     end
 end
 
+local function ClearAll(buf)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+end
+
 function StartupScreen()
-    -- Create a new buffer
     if vim.fn.argc() == 0 then
         vim.cmd("enew")
         local buffer = vim.api.nvim_get_current_buf()
+        local buffer_active = true
         vim.bo[buffer].buftype = "nofile"
         vim.bo[buffer].bufhidden = "wipe"
         vim.cmd("setlocal mousescroll=ver:0,hor:0")
@@ -125,21 +129,14 @@ function StartupScreen()
         autocmd BufWinLeave <buffer=%d> setlocal nonumber
         autocmd BufWinLeave <buffer=%d> setlocal relativenumber
         autocmd BufWinLeave <buffer=%d> setlocal mousescroll=ver:1,hor:1
+        autocmd BufWinLeave <buffer=%d> lua buffer_active = false
         augroup END
-        ]], buffer, buffer, buffer))
+        ]], buffer, buffer, buffer, buffer))
 
 
         local header_image = GetHeader()
-        local signiture = {
-            "┳┓ ┓┏ ┳ ┳┳┓",
-            "┃┃ ┃┃ ┃ ┃┃┃",
-            "┛┗ ┗┛ ┻ ┛ ┗",
-        }
-        local padding = {
-            "",
-            "",
-            "",
-        }
+        local signiture = GetSigniture()
+        local padding = {"", "", "",}
         local options = {
             "",
             "",
@@ -151,19 +148,30 @@ function StartupScreen()
             "╰───────────────────────────────╯",
         }
 
-        local width = vim.fn.winwidth(0)
-        local height = vim.fn.winheight(0)
+        -- Draw the components to the screen
+        local width
+        local height
+        local function main_loop()
+            if buffer_active then
+                if width ~= vim.fn.winwidth(0) or height ~=vim.fn.winheight(0) then
+                   width = vim.fn.winwidth(0)
+                   height = vim.fn.winheight(0)
+                   vim.bo[buffer].modifiable = true
+                   ClearAll(buffer)
+                   Draw(width, height, header_image, signiture, padding, options)
+                   vim.bo[buffer].modifiable = false
+                end
 
-        Draw(width, height, header_image, signiture, padding, options)
-
-
-
-        -- Enable cursor line highlighting
-        vim.wo.cursorline = false
-        vim.cmd("setlocal nomodifiable")
-
+                vim.defer_fn(function ()
+                    main_loop()
+                end, 100)
+            end
+        end
+        main_loop()
         AddKeybinds()
 
+
+        vim.wo.cursorline = false
         vim.bo[buffer].modifiable = false
         vim.cmd("augroup RestoreSyntax")
         vim.cmd("autocmd!")
