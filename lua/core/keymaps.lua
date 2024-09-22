@@ -44,57 +44,57 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Git keybind
 vim.keymap.set("n", "<leader>gc", function ()
-    vim.fn.system("git add .")
-    local commit = vim.fn.input("commit message: ")
-    local output = vim.fn.system(string.format('git commit -m "%s"', commit))
-    local lines = vim.split(output, "\n")
-    for _,line in ipairs(lines) do
-      vim.api.nvim_echo({{line, "Normal"}}, false, {})
-    end
+  vim.fn.system("git add .")
+  local commit = vim.fn.input("commit message: ")
+  local output = vim.fn.system(string.format('git commit -m "%s"', commit))
+  local lines = vim.split(output, "\n")
+  for _,line in ipairs(lines) do
+    print(line)
+  end
 
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function ()
-    vim.cmd(":! git push");
+  vim.cmd(":! git push");
 end, { silent = true})
 
 vim.keymap.set("n", "<leader>get", function ()
-    vim.cmd(":! git pull");
+  vim.cmd(":! git pull");
 end, { silent = true })
 
 
 -- Compiler Commands
 vim.keymap.set("n", "<leader>ö", function ()
-    local cfile = vim.fn.expand("%:t:r")
-    local extension = vim.fn.expand("%:t:e")
-    if extension == "rs" then
-        vim.cmd[[!cargo run]]
-    elseif extension == "cpp" then
-        local command
-        if PLATFORM == "Windows_NT" then
-            command = string.format("! %s.exe", cfile)
-        else
-            command = string.format("! ./%s", cfile)
-        end
-        vim.cmd(command)
+  local cfile = vim.fn.expand("%:t:r")
+  local extension = vim.fn.expand("%:t:e")
+  if extension == "rs" then
+    vim.cmd[[!cargo run]]
+  elseif extension == "cpp" then
+    local command
+    if PLATFORM == "Windows_NT" then
+      command = string.format("! %s.exe", cfile)
+    else
+      command = string.format("! ./%s", cfile)
     end
+    vim.cmd(command)
+  end
 end)
 
 vim.keymap.set("n", "<leader>ü", function ()
-    local current_file = vim.fn.expand("%:t")
-    local cfile = vim.fn.expand("%:t:r")
-    local extension = vim.fn.expand("%:t:e")
-    if extension == "rs" then
-        vim.cmd[[!cargo build]]
-    elseif extension == "cpp" then
-        local command
-        if CPP_COMPILER == "clang++" then
-            command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
-        elseif CPP_COMPILER == "g++" then
-            command = string.format("! g++ %s -o %s", current_file, cfile)
-        end
-        vim.cmd(command)
+  local current_file = vim.fn.expand("%:t")
+  local cfile = vim.fn.expand("%:t:r")
+  local extension = vim.fn.expand("%:t:e")
+  if extension == "rs" then
+    vim.cmd[[!cargo build]]
+  elseif extension == "cpp" then
+    local command
+    if CPP_COMPILER == "clang++" then
+      command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
+    elseif CPP_COMPILER == "g++" then
+      command = string.format("! g++ %s -o %s", current_file, cfile)
     end
+    vim.cmd(command)
+  end
 end)
 
 
