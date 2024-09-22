@@ -18,6 +18,8 @@ require("core.dev_env")
 require("core.commands")
 require("core.keymaps")
 require("core.plugins")
+
+require("custom_plugins.startup")
+
 require("core.plugin_config")
 require("core.options")
-require("core.after")
