@@ -48,6 +48,51 @@ local function GetMaxWidth(list)
     return width
 end
 
+local function Draw(width, height, header_image, signiture, padding, options)
+
+    if height < #header_image + #signiture + #padding + #options then
+        local new_image = {}
+        local new_options = {}
+        local new_content = {}
+        local header_image_width = GetMaxWidth(header_image)
+        local signiture_width = GetMaxWidth(signiture)
+        local options_width = GetMaxWidth(options)
+        local image_width = math.max(header_image_width, signiture_width)
+        local side_padding = math.floor((width - (image_width + options_width)) / 3)
+        local middle = 1.5 * side_padding + header_image_width
+
+        for _,line in ipairs(header_image) do
+            local centered_line = CenterString(line, middle)
+            centered_line = centered_line .. string.rep(" ", (middle - #centered_line))
+            table.insert(new_image, centered_line)
+        end
+        for _,line in ipairs(signiture) do
+            local centered_line = CenterString(line, middle)
+            centered_line = centered_line .. string.rep(" ", (middle - #centered_line))
+            table.insert(new_image, centered_line)
+        end
+        for _,line in ipairs(options) do
+            local centered_line = CenterString(line, (width - middle))
+            table.insert(new_options, centered_line)
+        end
+        for i = 1, math.max(#new_image, #new_options) do
+            local str1 = new_image[i] or ""
+            local str2 = new_options[i] or ""
+            table.insert(new_content, str1 .. str2)
+        end
+        vim.api.nvim_buf_set_lines(0, -2, -1, false, new_content)
+        ColorLinesHor(#new_content, math.floor(middle))
+
+    else
+        local line_count = #header_image + #signiture
+
+        ShowLines(header_image, width)
+        ShowLines(signiture, width)
+        ShowLines(padding, width)
+        ShowLines(options, width)
+        ColorLinesVert(line_count)
+    end
+end
 
 function StartupScreen()
     -- Create a new buffer
@@ -75,7 +120,8 @@ function StartupScreen()
             " _____ _____ _____ _____ ",
             "|| N ||| V ||| I ||| M ||",
             "||___|||___|||___|||___||",
-            "|/___\\|/___\\|/___\\|/___\\|"
+            "|/___\\|/___\\|/___\\|/___\\|",
+            ""
         }
         local padding = {
             "",
@@ -96,48 +142,9 @@ function StartupScreen()
         local width = vim.fn.winwidth(0)
         local height = vim.fn.winheight(0)
 
-        if height < #header_image + #signiture + #padding + #options then
-            local new_image = {}
-            local new_options = {}
-            local new_content = {}
-            local header_image_width = GetMaxWidth(header_image)
-            local signiture_width = GetMaxWidth(signiture)
-            local options_width = GetMaxWidth(options)
-            local image_width = math.max(header_image_width, signiture_width)
-            local side_padding = math.floor((width - (image_width + options_width)) / 3)
-            local middle = 1.5 * side_padding + header_image_width
+        Draw(width, height, header_image, signiture, padding, options)
 
-            for _,line in ipairs(header_image) do
-                local centered_line = CenterString(line, middle)
-                centered_line = centered_line .. string.rep(" ", (middle - #centered_line))
-                table.insert(new_image, centered_line)
-            end
-            for _,line in ipairs(signiture) do
-                local centered_line = CenterString(line, middle)
-                centered_line = centered_line .. string.rep(" ", (middle - #centered_line))
-                table.insert(new_image, centered_line)
-            end
-            for _,line in ipairs(options) do
-                local centered_line = CenterString(line, (width - middle))
-                table.insert(new_options, centered_line)
-            end
-            for i = 1, math.max(#new_image, #new_options) do
-                local str1 = new_image[i] or ""
-                local str2 = new_options[i] or ""
-                table.insert(new_content, str1 .. str2)
-            end
-            vim.api.nvim_buf_set_lines(0, -2, -1, false, new_content)
-            ColorLinesHor(#new_content, math.floor(middle))
 
-        else
-            local line_count = #header_image + #signiture
-
-            ShowLines(header_image, width)
-            ShowLines(signiture, width)
-            ShowLines(padding, width)
-            ShowLines(options, width)
-            ColorLinesVert(line_count)
-        end
 
         -- Enable cursor line highlighting
         vim.wo.cursorline = false
