@@ -62,7 +62,6 @@ local function GetMaxWidth(list)
 end
 
 local function Draw(width, height, header_image, signiture, padding, options)
-
     if height < #header_image + #signiture + #padding + #options then
         local new_image = {}
         local new_options = {}
@@ -85,7 +84,7 @@ local function Draw(width, height, header_image, signiture, padding, options)
             table.insert(new_image, centered_line)
         end
         for _,line in ipairs(options) do
-            local centered_line = CenterString(line,  middle / 2)
+            local centered_line = CenterString(line,  middle)
             table.insert(new_options, centered_line)
         end
         for i = 1, math.max(#new_image, #new_options) do
