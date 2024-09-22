@@ -112,26 +112,16 @@ local function ClearAll(buf)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
 end
 
+
 function StartupScreen()
     if vim.fn.argc() == 0 then
         vim.cmd("enew")
         local buffer = vim.api.nvim_get_current_buf()
-        local buffer_active = true
         vim.bo[buffer].buftype = "nofile"
         vim.bo[buffer].bufhidden = "wipe"
         vim.cmd("setlocal mousescroll=ver:0,hor:0")
         vim.cmd("setlocal norelativenumber")
         vim.cmd("setlocal nonumber")
-
-        vim.cmd(string.format([[
-        augroup MouseScrollSetting
-        autocmd!
-        autocmd BufWinLeave <buffer=%d> setlocal nonumber
-        autocmd BufWinLeave <buffer=%d> setlocal relativenumber
-        autocmd BufWinLeave <buffer=%d> setlocal mousescroll=ver:1,hor:1
-        autocmd BufWinLeave <buffer=%d> lua buffer_active = false
-        augroup END
-        ]], buffer, buffer, buffer, buffer))
 
 
         local header_image = GetHeader()
@@ -152,7 +142,7 @@ function StartupScreen()
         local width
         local height
         local function main_loop()
-            if buffer_active then
+            if buffer == vim.api.nvim_get_current_buf() then
                 if width ~= vim.fn.winwidth(0) or height ~=vim.fn.winheight(0) then
                    width = vim.fn.winwidth(0)
                    height = vim.fn.winheight(0)
@@ -165,11 +155,29 @@ function StartupScreen()
                 vim.defer_fn(function ()
                     main_loop()
                 end, 100)
+            else
             end
         end
-        main_loop()
         AddKeybinds()
+        main_loop()
 
+        vim.api.nvim_create_augroup("MouseScrollSetting", { clear = true })
+        vim.api.nvim_create_autocmd("BufWinLeave", {
+            group = "MouseScrollSetting",
+            buffer = buffer,
+            callback = function()
+                vim.opt_local.number = false
+                vim.opt_local.relativenumber = true
+                vim.opt_local.mousescroll = "ver:1,hor:1"
+            end,
+        })
+        vim.api.nvim_create_autocmd("BufEnter", {
+            group = "MouseScrollSetting",
+            buffer = buffer,
+            callback = function()
+                main_loop()
+            end,
+        })
 
         vim.wo.cursorline = false
         vim.bo[buffer].modifiable = false
