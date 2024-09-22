@@ -25,6 +25,19 @@ function WriteTheme(index)
     end
 end
 
+function PrintOutput(output)
+    local lines = vim.split(output, "\n")
+    for _,line in ipairs(lines) do
+      print(line)
+    end
+
+    vim.defer_fn(function ()
+      ClearTerm()
+    end, 1000)
+
+end
+
+
 function ClearTerm()
     vim.cmd [[:echo ""]]
     TIMER_ID = nil

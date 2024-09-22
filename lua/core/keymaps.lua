@@ -47,23 +47,18 @@ vim.keymap.set("n", "<leader>gc", function ()
   vim.fn.system("git add .")
   local commit = vim.fn.input("commit message: ")
   local output = vim.fn.system(string.format('git commit -m "%s"', commit))
-  local lines = vim.split(output, "\n")
-  for _,line in ipairs(lines) do
-    print(line)
-  end
-
-  vim.defer_fn(function ()
-    ClearTerm()
-  end, 500)
+  PrintOutput(output)
 
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function ()
-  vim.cmd(":! git push");
+  local output = vim.fn.system("git push");
+  PrintOutput(output)
 end, { silent = true})
 
 vim.keymap.set("n", "<leader>get", function ()
-  vim.cmd(":! git pull");
+  local output = vim.fn.system("git pull");
+  PrintOutput(output)
 end, { silent = true })
 
 
