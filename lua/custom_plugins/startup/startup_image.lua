@@ -118,11 +118,9 @@ function StartupScreen()
 
         local header_image = GetHeader()
         local signiture = {
-            " _____ _____ _____ _____ ",
-            "|| N ||| V ||| I ||| M ||",
-            "||___|||___|||___|||___||",
-            "|/___\\|/___\\|/___\\|/___\\|",
-            ""
+            "┳┓ ┓┏ ┳ ┳┳┓",
+            "┃┃ ┃┃ ┃ ┃┃┃",
+            "┛┗ ┗┛ ┻ ┛ ┗",
         }
         local padding = {
             "",
