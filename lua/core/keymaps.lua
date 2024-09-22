@@ -52,7 +52,9 @@ vim.keymap.set("n", "<leader>gc", function ()
     print(line)
   end
 
-  vim.defer_fn(ClearTerm, 500)
+  vim.defer_fn(function ()
+    ClearTerm()
+  end, 500)
 
 end, { silent = true })
 
