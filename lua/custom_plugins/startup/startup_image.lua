@@ -12,7 +12,7 @@ local function ShowLines(line_content, width)
         local centered_line = CenterString(line, width)
         table.insert(lines, centered_line)
     end
-    vim.api.nvim_buf_set_lines(0, -2, -1, false, lines)
+    vim.api.nvim_buf_set_lines(0, -1, -1, false, lines)
 end
 
 local function ColorLinesVert(line_count)
