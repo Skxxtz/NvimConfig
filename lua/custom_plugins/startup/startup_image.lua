@@ -61,9 +61,10 @@ function StartupScreen()
         local options = {
             "OPTIONS",
             "",
-            "<leader> oc    Open Configs",
-            "<leader> ff    Find Files  ",
-            "<leader> fg    Find String ",
+            "<leader> oc    Open Configs  ",
+            "<leader> or    Open README.MD",
+            "<leader> ff    Find Files    ",
+            "<leader> fg    Find String   ",
         }
         local line_count = #header_image + #signiture
         ShowLines(header_image)
@@ -91,6 +92,10 @@ function StartupScreen()
         vim.keymap.set("n", "<leader>oc", function ()
             vim.cmd("cd " .. vim.fn.stdpath("config"))
             vim.cmd(":Ex")
+        end, { buffer = 0, noremap = true, silent = true })
+
+        vim.keymap.set("n", "<leader>or", function ()
+            vim.cmd(":e " .. vim.fn.stdpath("config") .. "/README.md")
         end, { buffer = 0, noremap = true, silent = true })
 
         vim.bo[buffer].modifiable = false
