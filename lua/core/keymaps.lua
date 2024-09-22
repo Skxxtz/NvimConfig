@@ -52,6 +52,8 @@ vim.keymap.set("n", "<leader>gc", function ()
     print(line)
   end
 
+  vim.defer_fn(ClearTerm, 500)
+
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function ()
