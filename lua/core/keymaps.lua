@@ -47,6 +47,11 @@ vim.keymap.set("n", "<leader>gc", function ()
     vim.fn.system("git add .")
     local commit = vim.fn.input("commit message: ")
     local output = vim.fn.system(string.format('git commit -m "%s"', commit))
+    local lines = vim.split(output, "\n")
+    for _,line in ipairs(lines) do
+      vim.api.nvim_echo({{line, "Normal"}}, false, {})
+    end
+
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function ()
