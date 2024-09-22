@@ -53,6 +53,14 @@ vim.keymap.set("n", "<leader>gc", function ()
     end, 500)
 end, { silent = true })
 
+vim.keymap.set("n", "<leader>get", function ()
+    vim.fn.system("git pull");
+    print("Content Pulled");
+    vim.defer_fn(function ()
+        ClearTerm();
+    end, 500)
+end, { silent = true })
+
 
 -- Compiler Commands
 vim.keymap.set("n", "<leader>ö", function ()

@@ -125,5 +125,6 @@
 | --------------- | --------------- | --------------- | --------------- |
 | n | leader | gc | Git commit with message |
 | n | leader | gp | Git push |
+| n | leader | get | Git pull |
 
 
