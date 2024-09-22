@@ -1,7 +1,7 @@
-function get_header()
+function GetHeader()
     local sign_header = {
-        "",
-        "",
+        "                         ",
+        "                         ",
         "             88          ",
         "            d88b         ",
         "            8888         ",
@@ -15,20 +15,7 @@ function get_header()
         "",
     }
 
-    local sign_header_with_title = {
-        "",
-        "",
-        "             88          ",
-        "            d88b         ",
-        "            8888         ",
-        "           d8888         ",
-        "         _d88888b        ",
-        "       _d88888888b       ",
-        "    _cd88888888888b__    ",
-        "  cd8888888P  Y888888bo_ ",
-        " d88888P        Y8888888b",
-        " Y88P               Y888P",
-        "",
+    local nvim_text = {
             "                             d8,                  ",
             "                            `8P                   ",
             "",
@@ -39,8 +26,8 @@ function get_header()
     }
 
     local maya_header = {
-        "",
-        "",
+        "                                 ",
+        "                                 ",
         "             _____               ",
         "            _|[]_|_              ",
         "          _/_/=|_\\_\\_          ",
@@ -53,8 +40,8 @@ function get_header()
     }
 
     local tree_header = {
-        "",
-        "",
+        "                            ",
+        "                            ",
         "        # #### ####         ",
         "      ### \\/#|### |/####    ",
         "     ##\\/#/ \\||/##/_/##/_#  ",
@@ -73,13 +60,12 @@ function get_header()
     }
 
     local header_image
-    local line_count
-    if STARTUP_IMAGE == "tree" then
+    if STARTUP_IMAGE == "Tree" then
         header_image = tree_header
     elseif STARTUP_IMAGE == "Sign" then
         header_image = sign_header
-    elseif STARTUP_IMAGE == "Sign_with_title" then
-        header_image = sign_header_with_title
+    elseif STARTUP_IMAGE == "Nvim_Text" then
+        header_image = nvim_text
     elseif STARTUP_IMAGE == "Maya" then
         header_image = maya_header
     else
