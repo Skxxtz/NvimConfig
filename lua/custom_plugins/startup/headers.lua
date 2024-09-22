@@ -23,6 +23,8 @@ function GetHeader()
             "  88P' ?8b    d88  d8P'      88P      88P'`?8P'?8b",
             " d88   88P    ?8b ,88'      d88      d88  d88  88P",
             "d88'   88b    `?888P'      d88'     d88' d88'  88b",
+            "",
+            "",
     }
 
     local maya_header = {
