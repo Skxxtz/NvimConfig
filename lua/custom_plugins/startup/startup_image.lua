@@ -6,6 +6,18 @@ local function CenterString(str, w)
     return string.rep(" ", pad) .. str
 end
 
+local function CenterStringVert(list, height)
+    local diff = math.floor((height - #list) / 2)
+    local vert_padding = {}
+    for _ = 1, diff do
+       table.insert(vert_padding, "")
+    end
+    for _, line in ipairs(list) do
+        table.insert(vert_padding, line)
+    end
+    return vert_padding
+end
+
 local function ShowLines(line_content, width)
     local lines = {}
     for _, line in ipairs(line_content) do
@@ -81,7 +93,9 @@ local function Draw(width, height, header_image, signiture, padding, options)
             local str2 = new_options[i] or ""
             table.insert(new_content, str1 .. str2)
         end
+        new_content = CenterStringVert(new_content, height)
         vim.api.nvim_buf_set_lines(0, -2, -1, false, new_content)
+
         ColorLinesHor(#new_content, math.floor(middle))
 
     else
