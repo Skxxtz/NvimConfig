@@ -44,21 +44,17 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Git keybind
 vim.keymap.set("n", "<leader>gc", function ()
-    vim.fn.system("git add .");
+    vim.cmd(":! git add .");
     local commit = vim.fn.input("commit message: ");
-    vim.fn.system(string.format('git commit -m "%s"', commit));
-    print("Changed committed.");
-    vim.defer_fn(function ()
-        ClearTerm();
-    end, 500)
+    vim.cmd(string.format(':! git commit -m "%s"', commit));
 end, { silent = true })
 
+vim.keymap.set("n", "<leader>gp", function ()
+    vim.cmd(":! git push");
+end, { silent = true})
+
 vim.keymap.set("n", "<leader>get", function ()
-    vim.fn.system("git pull");
-    print("Content Pulled");
-    vim.defer_fn(function ()
-        ClearTerm();
-    end, 500)
+    vim.cmd(":! git pull");
 end, { silent = true })
 
 
@@ -97,13 +93,6 @@ vim.keymap.set("n", "<leader>ü", function ()
 end)
 
 
-vim.keymap.set("n", "<leader>gp", function ()
-    vim.fn.system("git push");
-    print("Changed pushed.")
-    vim.defer_fn(function ()
-        ClearTerm();
-    end, 500)
-end, { silent = true})
 
 
 -- Unbind Q
