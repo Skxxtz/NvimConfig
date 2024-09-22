@@ -7,7 +7,7 @@ local function CenterString(str, w)
 end
 
 local function CenterStringVert(list, height)
-    local diff = math.floor((height - #list) / 2)
+    local diff = math.floor((height - 2 - #list) / 2)
     local vert_padding = {}
     for _ = 1, diff do
        table.insert(vert_padding, "")
