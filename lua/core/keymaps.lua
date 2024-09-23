@@ -77,7 +77,7 @@ vim.keymap.set("n", "<leader>ö", function()
             command = string.format("./%s", cfile)
         end
         local output = vim.fn.system(command)
-        vim.cmd("echo " .. output)
+        vim.cmd(string.format("echo """) .. output)
     elseif extension == "py" then
         vim.cmd(string.format("silent ! python %s.py", cfile))
     end
