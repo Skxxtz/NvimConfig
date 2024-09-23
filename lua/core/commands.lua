@@ -30,7 +30,6 @@ function PrintOutput(output, time)
     for _,line in ipairs(lines) do
       print(line)
     end
-    print(output)
 
     vim.defer_fn(function ()
       ClearTerm()
