@@ -10,7 +10,7 @@ local function CenterStringVert(list, height)
     local diff = math.floor((height - #list) / 2) - 2
     local vert_padding = {}
     for _ = 1, diff do
-       table.insert(vert_padding, "")
+        table.insert(vert_padding, "")
     end
     for _, line in ipairs(list) do
         table.insert(vert_padding, line)
@@ -114,67 +114,65 @@ end
 
 
 function StartupScreen(buffer, original_options)
-    if vim.fn.argc() == 0 then
-        local header_image = GetHeader()
-        local signiture = GetSigniture()
-        local padding = {"", "", "",}
-        local options = {
-            "",
-            "",
-            "╭─OPTIONS───────────────────────╮",
-            "│ <leader> oc    Open Configs   │",
-            "│ <leader> or    Open README.MD │",
-            "│ <leader> ff    Find Files     │",
-            "│ <leader> fg    Find String    │",
-            "╰───────────────────────────────╯",
-        }
-        -- Draw the components to the screen
-        local width
-        local height
-        local function main_loop()
-            if buffer == vim.api.nvim_get_current_buf() then
-                if width ~= vim.fn.winwidth(0) or height ~=vim.fn.winheight(0) then
-                   width = vim.fn.winwidth(0)
-                   height = vim.fn.winheight(0)
-                   vim.bo[buffer].modifiable = true
-                   ClearAll(buffer)
-                   Draw(width, height, header_image, signiture, padding, options)
-                   vim.bo[buffer].modifiable = false
-                end
-
-                vim.defer_fn(function ()
-                    main_loop()
-                end, 100)
-            else
-                vim.api.nvim_clear_autocmds({group = "StartupOptions"})
+    local header_image = GetHeader()
+    local signiture = GetSigniture()
+    local padding = {"", "", "",}
+    local options = {
+        "",
+        "",
+        "╭─OPTIONS───────────────────────╮",
+        "│ <leader> oc    Open Configs   │",
+        "│ <leader> or    Open README.MD │",
+        "│ <leader> ff    Find Files     │",
+        "│ <leader> fg    Find String    │",
+        "╰───────────────────────────────╯",
+    }
+    -- Draw the components to the screen
+    local width
+    local height
+    local function main_loop()
+        if buffer == vim.api.nvim_get_current_buf() then
+            if width ~= vim.fn.winwidth(0) or height ~=vim.fn.winheight(0) then
+                width = vim.fn.winwidth(0)
+                height = vim.fn.winheight(0)
+                vim.bo[buffer].modifiable = true
+                ClearAll(buffer)
+                Draw(width, height, header_image, signiture, padding, options)
+                vim.bo[buffer].modifiable = false
             end
-        end
-        AddKeybinds()
-        main_loop()
 
-        vim.api.nvim_create_augroup("SettingsRevertion", { clear = true })
-        vim.api.nvim_create_autocmd("BufWinLeave", {
-            group = "SettingsRevertion",
-            buffer = buffer,
-            callback = function()
-                vim.opt_local.number = original_options.number
-                vim.opt_local.relativenumber = original_options.relativenumber
-                vim.opt_local.mousescroll = original_options.mousescroll
-                vim.wo.signcolumn = original_options.signcolumn
-                vim.opt.foldmethod = original_options.foldmethod
-                vim.wo.cursorline = original_options.cursorline
-            end,
-        })
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = "SettingsRevertion",
-            buffer = buffer,
-            callback = function()
+            vim.defer_fn(function ()
                 main_loop()
-            end,
-        })
-
-        vim.bo[buffer].modifiable = false
+            end, 100)
+        else
+            vim.api.nvim_clear_autocmds({group = "StartupOptions"})
+        end
     end
+    AddKeybinds()
+    main_loop()
+
+    vim.api.nvim_create_augroup("SettingsRevertion", { clear = true })
+    vim.api.nvim_create_autocmd("BufWinLeave", {
+        group = "SettingsRevertion",
+        buffer = buffer,
+        callback = function()
+            vim.opt_local.number = original_options.number
+            vim.opt_local.relativenumber = original_options.relativenumber
+            vim.opt_local.mousescroll = original_options.mousescroll
+            vim.wo.signcolumn = original_options.signcolumn
+            vim.opt.foldmethod = original_options.foldmethod
+            vim.wo.cursorline = original_options.cursorline
+        end,
+    })
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = "SettingsRevertion",
+        buffer = buffer,
+        callback = function()
+            main_loop()
+        end,
+    })
+
+    vim.bo[buffer].modifiable = false
 end
 
 
@@ -193,7 +191,8 @@ vim.api.nvim_create_augroup("StartupOptions", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
     group = "StartupOptions",
     callback = function ()
-        local buffer = vim.api.nvim_get_current_buf()
+        if vim.fn.argc() == 0 then
+            local buffer = vim.api.nvim_get_current_buf()
             vim.bo[buffer].buftype = "nofile"
             vim.bo[buffer].bufhidden = "wipe"
             vim.cmd("setlocal mousescroll=ver:0,hor:0")
@@ -202,6 +201,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
             vim.wo.signcolumn = "no"
             vim.opt.foldmethod = "manual"
             vim.wo.cursorline = false
-        StartupScreen(buffer, original_options)
+            StartupScreen(buffer, original_options)
+        end
     end,
 })
