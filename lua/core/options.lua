@@ -52,15 +52,18 @@ vim.cmd('syntax on')
 -- Set conceal level
 vim.opt.conceallevel = 2
 
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevel = 0
+
 -- Define syntax match and highlight linking in an autocmd group
 vim.cmd([[
-  augroup CustomSyntax
+    augroup CustomSyntax
     autocmd!
     autocmd FileType * syntax match singleArrow '->' conceal cchar=→
     autocmd FileType * syntax match doubleArrow '=>' conceal cchar=⟹
     autocmd FileType * highlight default link singleArrow Normal
     autocmd FileType * highlight default link doubleArrow Normal
-  augroup END
+    augroup END
 ]])
 
 vim.cmd('autocmd FileType html,vue,django,javascript setlocal filetype=html')
