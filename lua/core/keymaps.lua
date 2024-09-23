@@ -56,7 +56,9 @@ vim.keymap.set("n", "<leader>gp", function()
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>get", function()
+    vim.fn.system("git stash");
     local output = vim.fn.system("git pull");
+    vim.fn.system("git stash pop");
     PrintOutput(output, 750)
 end, { silent = true })
 
@@ -66,17 +68,18 @@ vim.keymap.set("n", "<leader>ö", function()
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
-        vim.cmd("! cargo run\n")
+        vim.cmd(":silent ! cargo run")
     elseif extension == "cpp" then
         local command
         if PLATFORM == "Windows_NT" then
-            command = string.format("! .\\ %s.exe\n", cfile)
+            command = string.format("silent ! .\\%s.exe", cfile)
         else
-            command = string.format("! ./%s\n", cfile)
+            command = string.format("./%s", cfile)
         end
-        vim.cmd(command)
+        local output = vim.fn.system(command)
+        vim.cmd("echo " .. output)
     elseif extension == "py" then
-        vim.cmd(string.format("! python %s.py\n", cfile))
+        vim.cmd(string.format("silent ! python %s.py", cfile))
     end
 end)
 
@@ -85,13 +88,14 @@ vim.keymap.set("n", "<leader>ü", function()
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
-        vim.cmd("! cargo build\n")
+        vim.cmd(":silent ! cargo build\n")
     elseif extension == "cpp" then
         local command
         if CPP_COMPILER == "clang++" then
-            command = string.format("! clang++ %s -o %s.exe\n", current_file, cfile)
+            vim.cmd[[:w]]
+            command = string.format("silent ! clang++ %s -o %s.exe", current_file, cfile)
         elseif CPP_COMPILER == "g++" then
-            command = string.format("! g++ %s -o %s\n", current_file, cfile)
+            command = string.format("silent ! g++ %s -o %s", current_file, cfile)
         end
         vim.cmd(command)
     end
