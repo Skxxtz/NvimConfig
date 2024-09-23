@@ -10,6 +10,7 @@ telescope.setup{
             "debug/",
             "cache/",
             ".git/",
+            ".git\\",
         }
     }
 }
