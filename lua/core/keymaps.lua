@@ -70,7 +70,7 @@ vim.keymap.set("n", "<leader>ö", function()
     elseif extension == "cpp" then
         local command
         if PLATFORM == "Windows_NT" then
-            command = string.format(".\\ %s.exe\n", cfile)
+            command = string.format("! .\\ %s.exe\n", cfile)
         else
             command = string.format("! ./%s\n", cfile)
         end
