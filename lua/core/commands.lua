@@ -26,13 +26,11 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
-    vim.defer_fn(function ()
-      ClearTerm()
-    end, 10)
     local lines = vim.split(output, "\n")
     for _,line in ipairs(lines) do
       print(line)
     end
+    print(output)
 
     vim.defer_fn(function ()
       ClearTerm()
