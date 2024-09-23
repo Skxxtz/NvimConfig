@@ -30,15 +30,12 @@ function PrintOutput(output, time)
     for _,line in ipairs(lines) do
       print(line)
     end
-
-    vim.defer_fn(function ()
-      ClearTerm()
-    end, time)
-
+    AddOrReplaceTimer(time, ClearTerm)
 end
 
 
 function ClearTerm()
+
     vim.cmd [[:echo ""]]
     TIMER_ID = nil
 end
