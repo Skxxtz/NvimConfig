@@ -67,17 +67,17 @@ vim.keymap.set("n", "<leader>ö", function ()
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
-        vim.cmd[[!cargo run]]
+        vim.cmd("! cargo run\n")
     elseif extension == "cpp" then
         local command
         if PLATFORM == "Windows_NT" then
-            command = string.format("! %s.exe", cfile)
+            command = string.format(".\\ %s.exe\n", cfile)
         else
-            command = string.format("! ./%s", cfile)
+            command = string.format("! ./%s\n", cfile)
         end
         vim.cmd(command)
     elseif extension == "py" then
-        vim.cmd(string.format("! python %s.py", cfile))
+        vim.cmd(string.format("! python %s.py\n", cfile))
     end
 end)
 
@@ -85,17 +85,21 @@ vim.keymap.set("n", "<leader>ü", function ()
     local current_file = vim.fn.expand("%:t")
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
+    local output
     if extension == "rs" then
-        vim.cmd[[!cargo build]]
+        output = vim.cmd("! cargo build\n")
     elseif extension == "cpp" then
         local command
         if CPP_COMPILER == "clang++" then
-            command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
+            command = string.format("! clang++ %s -o %s.exe\n", current_file, cfile)
         elseif CPP_COMPILER == "g++" then
-            command = string.format("! g++ %s -o %s", current_file, cfile)
+            command = string.format("! g++ %s -o %s\n", current_file, cfile)
         end
-        vim.cmd(command)
+        output = vim.cmd(command)
+
     end
+
+
 end)
 
 

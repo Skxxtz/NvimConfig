@@ -1,11 +1,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Netrw
 vim.g.netrw_wrowse_split = 0
 vim.g.netrw_banner = 0
-
-
-
 
 
 vim.o.termguicolors = true
@@ -13,7 +11,6 @@ vim.o.background = "dark"
 
 vim.opt.backspace = '2'
 vim.opt.showcmd = true
-vim.opt.cursorline = true
 
 -- use spaces for tabs and whatnot
 vim.opt.tabstop = 4
@@ -22,7 +19,6 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
 vim.wo.signcolumn = "yes"
-
 
 -- set completion height
 vim.opt.pumheight = 5
