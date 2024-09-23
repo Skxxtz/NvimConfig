@@ -39,11 +39,11 @@ end
 
 
 function ClearTerm()
-    vim.cmd [[:echo ""]]
     if TIMER_ID then
         TIMER_ID:stop()
         TIMER_ID = nil
     end
+    vim.cmd [[:echo ""]]
 end
 
 function AddOrReplaceTimer(time, func)
