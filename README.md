@@ -20,6 +20,15 @@
 | n | | u | Undo |
 | n | Ctrl | r | Redo |
 
+### Folding
+| Mode | Modifier | Bind | Explanation |
+| --------------- | --------------- | --------------- | --------------- |
+| n | | zR | Open all folds |
+| n | | zM | Close all folds |
+| n | | zo | Open current fold |
+| n | | zc | Close current fold |
+| n | | zf | Create new fold |
+
 ### Replacing and Deleting
 | Mode | Modifier | Bind | Explanation |
 | --------------- | --------------- | --------------- | --------------- |
