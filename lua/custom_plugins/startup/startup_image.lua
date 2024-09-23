@@ -122,6 +122,7 @@ function StartupScreen()
         vim.cmd("setlocal mousescroll=ver:0,hor:0")
         vim.cmd("setlocal norelativenumber")
         vim.cmd("setlocal nonumber")
+        vim.wo.signcolumn = "no"
 
 
         local header_image = GetHeader()
@@ -169,6 +170,7 @@ function StartupScreen()
                 vim.opt_local.number = false
                 vim.opt_local.relativenumber = true
                 vim.opt_local.mousescroll = "ver:1,hor:1"
+                vim.wo.signcolumn = "yes"
             end,
         })
         vim.api.nvim_create_autocmd("BufEnter", {

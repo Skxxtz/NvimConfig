@@ -99,11 +99,10 @@ vim.keymap.set("n", "<leader>ü", function ()
 end)
 
 
-
-
 -- Unbind Q
 vim.keymap.set("n", "Q", "<nop>")
 
+vim.opt.foldmethod = "indent"
 
 vim.opt.backspace = "2"
 vim.opt.showcmd = true
