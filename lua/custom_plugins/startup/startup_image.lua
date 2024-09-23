@@ -150,7 +150,6 @@ function StartupScreen(buffer)
                 end, 100)
             else
                 vim.api.nvim_clear_autocmds({group = "StartupOptions"})
-                print("exited")
             end
         end
         AddKeybinds()
@@ -161,10 +160,11 @@ function StartupScreen(buffer)
             group = "MouseScrollSetting",
             buffer = buffer,
             callback = function()
-                vim.opt_local.number = false
+                vim.opt_local.number = true
                 vim.opt_local.relativenumber = true
                 vim.opt_local.mousescroll = "ver:1,hor:1"
                 vim.wo.signcolumn = "yes"
+                vim.opt.foldmethod = "indent"
             end,
         })
         vim.api.nvim_create_autocmd("BufEnter", {

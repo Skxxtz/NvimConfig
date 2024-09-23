@@ -52,8 +52,8 @@ vim.cmd('syntax on')
 -- Set conceal level
 vim.opt.conceallevel = 2
 
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#get_foldexpr()"
+vim.opt.foldmethod = "indent"
+vim.opt.foldnestmax = 1
 
 -- Define syntax match and highlight linking in an autocmd group
 vim.cmd([[
