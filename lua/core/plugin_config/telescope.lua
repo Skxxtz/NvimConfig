@@ -16,7 +16,7 @@ telescope.setup{
             "debug" .. appendix,
             "cache" .. appendix,
             ".git" .. appendix,
-            ".git\\",
+            ".cargo" .. appendix,
         }
     }
 }
