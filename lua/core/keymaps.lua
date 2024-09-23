@@ -44,6 +44,7 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Git keybind
 vim.keymap.set("n", "<leader>gc", function()
+    ClearTerm()
     vim.fn.system("git add .")
     local commit = vim.fn.input("commit message: ")
     local output = vim.fn.system(string.format('git commit -m "%s"', commit))
@@ -51,6 +52,7 @@ vim.keymap.set("n", "<leader>gc", function()
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function()
+    ClearTerm()
     local output = vim.fn.system("git push");
     PrintOutput(output)
 end, { silent = true })
