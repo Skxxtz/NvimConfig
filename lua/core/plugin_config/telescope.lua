@@ -9,6 +9,7 @@ telescope.setup{
             "staticfiles/",
             "debug/",
             "cache/",
+            ".git/",
         }
     }
 }
