@@ -21,8 +21,9 @@ STARTUP_SIGNITURE = "Squirly"
 require("core.commands")
 require("core.keymaps")
 require("core.plugins")
-
-require("custom_plugins.startup")
-
 require("core.plugin_config")
 require("core.options")
+require("custom_plugins.startup")
+
+
+

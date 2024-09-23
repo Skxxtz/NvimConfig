@@ -115,8 +115,6 @@ end
 
 function StartupScreen(buffer, original_options)
     if vim.fn.argc() == 0 then
-
-
         local header_image = GetHeader()
         local signiture = GetSigniture()
         local padding = {"", "", "",}
@@ -130,7 +128,6 @@ function StartupScreen(buffer, original_options)
             "│ <leader> fg    Find String    │",
             "╰───────────────────────────────╯",
         }
-
         -- Draw the components to the screen
         local width
         local height
@@ -155,9 +152,9 @@ function StartupScreen(buffer, original_options)
         AddKeybinds()
         main_loop()
 
-        vim.api.nvim_create_augroup("MouseScrollSetting", { clear = true })
+        vim.api.nvim_create_augroup("SettingsRevertion", { clear = true })
         vim.api.nvim_create_autocmd("BufWinLeave", {
-            group = "MouseScrollSetting",
+            group = "SettingsRevertion",
             buffer = buffer,
             callback = function()
                 vim.opt_local.number = original_options.number
@@ -165,17 +162,17 @@ function StartupScreen(buffer, original_options)
                 vim.opt_local.mousescroll = original_options.mousescroll
                 vim.wo.signcolumn = original_options.signcolumn
                 vim.opt.foldmethod = original_options.foldmethod
+                vim.wo.cursorline = original_options.cursorline
             end,
         })
         vim.api.nvim_create_autocmd("BufEnter", {
-            group = "MouseScrollSetting",
+            group = "SettingsRevertion",
             buffer = buffer,
             callback = function()
                 main_loop()
             end,
         })
 
-        vim.wo.cursorline = false
         vim.bo[buffer].modifiable = false
     end
 end
@@ -188,6 +185,7 @@ local original_options = {
     mousescroll = vim.opt_local.mousescroll,
     signcolumn = vim.wo.signcolumn,
     foldmethod = vim.opt.foldmethod,
+    cursorline = vim.wo.cursorline,
 }
 
 
@@ -203,6 +201,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
             vim.cmd("setlocal nonumber")
             vim.wo.signcolumn = "no"
             vim.opt.foldmethod = "manual"
+            vim.wo.cursorline = false
         StartupScreen(buffer, original_options)
     end,
 })
