@@ -26,11 +26,6 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
-    if TIMER_ID then
-        TIMER_ID:stop()
-        TIMER_ID = nil
-        vim.api.nvim_command("clear")
-    end
     local lines = vim.split(output, "\n")
     for _,line in ipairs(lines) do
       print(line)
@@ -40,7 +35,6 @@ end
 
 
 function ClearTerm()
-
     vim.cmd [[:echo ""]]
     TIMER_ID = nil
 end
