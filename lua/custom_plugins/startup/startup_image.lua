@@ -113,7 +113,7 @@ local function ClearAll(buf)
 end
 
 
-function StartupScreen(buffer)
+function StartupScreen(buffer, original_options)
     if vim.fn.argc() == 0 then
 
 
@@ -160,11 +160,11 @@ function StartupScreen(buffer)
             group = "MouseScrollSetting",
             buffer = buffer,
             callback = function()
-                vim.opt_local.number = true
-                vim.opt_local.relativenumber = true
-                vim.opt_local.mousescroll = "ver:1,hor:1"
-                vim.wo.signcolumn = "yes"
-                vim.opt.foldmethod = "indent"
+                vim.opt_local.number = original_options.number
+                vim.opt_local.relativenumber = original_options.relativenumber
+                vim.opt_local.mousescroll = original_options.mousescroll
+                vim.wo.signcolumn = original_options.signcolumn
+                vim.opt.foldmethod = original_options.foldmethod
             end,
         })
         vim.api.nvim_create_autocmd("BufEnter", {
@@ -182,6 +182,14 @@ end
 
 
 
+local original_options = {
+    number = vim.wo.number,
+    relativenumber = vim.wo.relativenumber,
+    mousescroll = vim.opt_local.mousescroll,
+    signcolumn = vim.wo.signcolumn,
+    foldmethod = vim.opt.foldmethod,
+}
+
 
 vim.api.nvim_create_augroup("StartupOptions", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -195,6 +203,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
             vim.cmd("setlocal nonumber")
             vim.wo.signcolumn = "no"
             vim.opt.foldmethod = "manual"
-        StartupScreen(buffer)
+        StartupScreen(buffer, original_options)
     end,
 })
