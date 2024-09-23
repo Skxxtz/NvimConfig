@@ -72,16 +72,15 @@ vim.keymap.set("n", "<leader>ö", function()
     elseif extension == "cpp" then
         local command
         if PLATFORM == "Windows_NT" then
-            command = string.format("silent ! .\\%s.exe", cfile)
+            command = string.format("! .\\%s.exe", cfile)
         else
-            command = string.format("./%s", cfile)
+            command = string.format("! ./%s", cfile)
         end
-        local output = vim.fn.system(command)
-        vim.cmd(string.format("echo ") .. output)
+        vim.cmd(command)
     elseif extension == "py" then
         vim.cmd(string.format("silent ! python %s.py", cfile))
     end
-end)
+end, {silent=true})
 
 vim.keymap.set("n", "<leader>ü", function()
     local current_file = vim.fn.expand("%:t")
@@ -93,13 +92,13 @@ vim.keymap.set("n", "<leader>ü", function()
         local command
         if CPP_COMPILER == "clang++" then
             vim.cmd[[:w]]
-            command = string.format("silent ! clang++ %s -o %s.exe", current_file, cfile)
+            command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
         elseif CPP_COMPILER == "g++" then
-            command = string.format("silent ! g++ %s -o %s", current_file, cfile)
+            command = string.format("! g++ %s -o %s", current_file, cfile)
         end
         vim.cmd(command)
     end
-end)
+end, {silent = true})
 
 
 -- Unbind Q
