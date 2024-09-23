@@ -113,16 +113,8 @@ local function ClearAll(buf)
 end
 
 
-function StartupScreen()
+function StartupScreen(buffer)
     if vim.fn.argc() == 0 then
-        vim.cmd("enew")
-        local buffer = vim.api.nvim_get_current_buf()
-        vim.bo[buffer].buftype = "nofile"
-        vim.bo[buffer].bufhidden = "wipe"
-        vim.cmd("setlocal mousescroll=ver:0,hor:0")
-        vim.cmd("setlocal norelativenumber")
-        vim.cmd("setlocal nonumber")
-        vim.wo.signcolumn = "no"
 
 
         local header_image = GetHeader()
@@ -157,6 +149,8 @@ function StartupScreen()
                     main_loop()
                 end, 100)
             else
+                vim.api.nvim_clear_autocmds({group = "StartupOptions"})
+                print("exited")
             end
         end
         AddKeybinds()
@@ -183,9 +177,24 @@ function StartupScreen()
 
         vim.wo.cursorline = false
         vim.bo[buffer].modifiable = false
-        vim.cmd("augroup RestoreSyntax")
-        vim.cmd("autocmd!")
-        vim.cmd("augroup END")
     end
 end
 
+
+
+
+vim.api.nvim_create_augroup("StartupOptions", { clear = true })
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = "StartupOptions",
+    callback = function ()
+        local buffer = vim.api.nvim_get_current_buf()
+            vim.bo[buffer].buftype = "nofile"
+            vim.bo[buffer].bufhidden = "wipe"
+            vim.cmd("setlocal mousescroll=ver:0,hor:0")
+            vim.cmd("setlocal norelativenumber")
+            vim.cmd("setlocal nonumber")
+            vim.wo.signcolumn = "no"
+            vim.opt.foldmethod = "manual"
+        StartupScreen(buffer)
+    end,
+})
