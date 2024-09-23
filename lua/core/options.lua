@@ -36,6 +36,15 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 
+vim.api.nvim_create_augroup("AutoFormat", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = "AutoFormat",
+    pattern = "*",
+    callback = function()
+        vim.lsp.buf.format()
+    end
+})
+
 -- Initialize Themes
 if vim.g.current_theme == nil then
     vim.g.current_theme = ReadTheme() or 3
@@ -53,13 +62,13 @@ vim.opt.foldnestmax = 1
 
 -- Define syntax match and highlight linking in an autocmd group
 vim.cmd([[
-    augroup CustomSyntax
-    autocmd!
-    autocmd FileType * syntax match singleArrow '->' conceal cchar=→
-    autocmd FileType * syntax match doubleArrow '=>' conceal cchar=⟹
-    autocmd FileType * highlight default link singleArrow Normal
-    autocmd FileType * highlight default link doubleArrow Normal
-    augroup END
+augroup CustomSyntax
+autocmd!
+autocmd FileType * syntax match singleArrow '->' conceal cchar=→
+autocmd FileType * syntax match doubleArrow '=>' conceal cchar=⟹
+autocmd FileType * highlight default link singleArrow Normal
+autocmd FileType * highlight default link doubleArrow Normal
+augroup END
 ]])
 
 vim.cmd('autocmd FileType html,vue,django,javascript setlocal filetype=html')
