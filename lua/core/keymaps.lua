@@ -54,6 +54,7 @@ end, { silent = true })
 vim.keymap.set("n", "<leader>gp", function()
     ClearTerm()
     local output = vim.fn.system("git push");
+    print(output)
     PrintOutput(output)
 end, { silent = true })
 
