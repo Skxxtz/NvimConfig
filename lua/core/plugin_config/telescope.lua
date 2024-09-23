@@ -1,15 +1,21 @@
 local telescope = require('telescope')
+local appendix
+if PLATFORM == "Windows_NT" then
+    appendix = "\\"
+else
+    appendix = "/"
+end
 
 telescope.setup{
     defaults = {
         file_ignore_patterns = {
             "node_modules",
             "migrations",
-            "venv/",
-            "staticfiles/",
-            "debug/",
-            "cache/",
-            ".git/",
+            "venv" .. appendix,
+            "staticfiles" .. appendix,
+            "debug" .. appendix,
+            "cache" .. appendix,
+            ".git" .. appendix,
             ".git\\",
         }
     }
