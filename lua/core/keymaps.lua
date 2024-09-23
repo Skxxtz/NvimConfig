@@ -65,8 +65,6 @@ end, { silent = true })
 
 -- Compiler Commands
 vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", {silent = true})
-vim.keymap.set("n", "<leader>ö", function()
-end, {silent=true})
 
 vim.keymap.set("n", "<leader>ü", function()
     local current_file = vim.fn.expand("%:t")
