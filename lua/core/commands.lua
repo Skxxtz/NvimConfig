@@ -25,7 +25,7 @@ function WriteTheme(index)
     end
 end
 
-function PrintOutput(output)
+function PrintOutput(output, time)
     local lines = vim.split(output, "\n")
     for _,line in ipairs(lines) do
       print(line)
@@ -33,7 +33,7 @@ function PrintOutput(output)
 
     vim.defer_fn(function ()
       ClearTerm()
-    end, 1000)
+    end, time)
 
 end
 
