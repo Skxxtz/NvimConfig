@@ -78,7 +78,7 @@ vim.keymap.set("n", "<leader>ö", function()
         end
         vim.cmd(command)
     elseif extension == "py" then
-        vim.cmd(string.format("! python %s.py", cfile))
+        vim.cmd(string.format("silent ! python %s.py", cfile))
     end
 end, {silent=true})
 
@@ -98,7 +98,7 @@ vim.keymap.set("n", "<leader>ü", function()
         end
         vim.cmd(command)
     end
-end, {silent = true})
+end)
 
 
 -- Unbind Q
