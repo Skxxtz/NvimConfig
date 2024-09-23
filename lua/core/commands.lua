@@ -79,6 +79,24 @@ end, {
     end
 })
 
+function RunCompiledProgram()
+    local cfile = vim.fn.expand("%:t:r")
+    local extension = vim.fn.expand("%:t:e")
+    if extension == "rs" then
+        vim.cmd(":silent ! cargo run")
+    elseif extension == "cpp" then
+        local command
+        if PLATFORM == "Windows_NT" then
+            command = string.format("! .\\%s.exe", cfile)
+        else
+            command = string.format("! ./%s", cfile)
+        end
+        vim.cmd(command)
+    elseif extension == "py" then
+        vim.cmd(string.format("! python %s.py", cfile))
+    end
+end
+
 
 
 

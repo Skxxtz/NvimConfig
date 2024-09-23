@@ -64,29 +64,8 @@ end, { silent = true })
 
 
 -- Compiler Commands
-function run_compiled_programm()
-    local cfile = vim.fn.expand("%:t:r")
-    local command = string.format("! .\\%s.exe", cfile)
-    vim.cmd(command)
-
-end
-vim.keymap.set("n", "<leader>öö", ":lua run_compiled_programm()<CR>", {silent = true})
+vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", {silent = true})
 vim.keymap.set("n", "<leader>ö", function()
-    local cfile = vim.fn.expand("%:t:r")
-    local extension = vim.fn.expand("%:t:e")
-    if extension == "rs" then
-        vim.cmd(":silent ! cargo run")
-    elseif extension == "cpp" then
-        local command
-        if PLATFORM == "Windows_NT" then
-            command = string.format("! .\\%s.exe", cfile)
-        else
-            command = string.format("! ./%s", cfile)
-        end
-        vim.cmd(command)
-    elseif extension == "py" then
-        vim.cmd(string.format("! python %s.py", cfile))
-    end
 end, {silent=true})
 
 vim.keymap.set("n", "<leader>ü", function()
