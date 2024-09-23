@@ -38,7 +38,7 @@ vim.wo.relativenumber = true
 
 -- Initialize Themes
 if vim.g.current_theme == nil then
-    vim.g.current_theme = ReadTheme()
+    vim.g.current_theme = ReadTheme() or 3
 end
 vim.cmd("Theme " .. THEMES[vim.g.current_theme])
 

@@ -64,6 +64,13 @@ end, { silent = true })
 
 
 -- Compiler Commands
+function run_compiled_programm()
+    local cfile = vim.fn.expand("%:t:r")
+    local command = string.format("! .\\%s.exe", cfile)
+    vim.cmd(command)
+
+end
+vim.keymap.set("n", "<leader>öö", ":lua run_compiled_programm()<CR>", {silent = true})
 vim.keymap.set("n", "<leader>ö", function()
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
@@ -78,7 +85,7 @@ vim.keymap.set("n", "<leader>ö", function()
         end
         vim.cmd(command)
     elseif extension == "py" then
-        vim.cmd(string.format("silent ! python %s.py", cfile))
+        vim.cmd(string.format("! python %s.py", cfile))
     end
 end, {silent=true})
 
@@ -98,7 +105,7 @@ vim.keymap.set("n", "<leader>ü", function()
         end
         vim.cmd(command)
     end
-end)
+end, {silent = true})
 
 
 -- Unbind Q
