@@ -37,13 +37,15 @@ vim.wo.relativenumber = true
 
 
 vim.api.nvim_create_augroup("AutoFormat", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePre", {
-    group = "AutoFormat",
-    pattern = "*",
-    callback = function()
-        vim.lsp.buf.format()
-    end
-})
+if "" == "b" then
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = "AutoFormat",
+        pattern = "*",
+        callback = function()
+            vim.lsp.buf.format()
+        end
+    })
+end
 
 -- Initialize Themes
 if vim.g.current_theme == nil then

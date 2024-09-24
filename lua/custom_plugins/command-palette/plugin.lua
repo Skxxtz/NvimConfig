@@ -133,11 +133,11 @@ vim.api.nvim_create_user_command("SearchCommand", function()
 
     vim.api.nvim_create_autocmd("WinClosed", {
         callback = function(args)
-            print(args.match, result_win, prompt_win, args.match == result_win, args.match == prompt_win)
-            if args.match == prompt_win then
-                vim.api.nvim_win_close(result_win, false)
-            elseif args.match == result_win then
+            local win_id = tonumber(args.match)
+            if win_id == result_win then
                 vim.api.nvim_win_close(prompt_win, false)
+            elseif win_id == prompt_win then
+                vim.api.nvim_win_close(result_win, false)
             end
         end
     })
