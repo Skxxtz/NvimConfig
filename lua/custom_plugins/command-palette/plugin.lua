@@ -97,7 +97,6 @@ local function format(results)
             table.insert(lines, mode .. mod .. bind .. expl)
         end
     end
-
     return lines
 end
 
@@ -106,6 +105,8 @@ vim.api.nvim_create_user_command("SearchCommand", function()
     local prompt_buf, prompt_win = open_window("prompt")
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
+    vim.api.nvim_feedkeys("i", "n", false)
+
     vim.api.nvim_create_autocmd("TextChangedI", {
         buffer = prompt_buf,
         callback = function()
@@ -128,8 +129,18 @@ vim.api.nvim_create_user_command("SearchCommand", function()
                 end
             end
         end
-    }
-    )
+    })
+
+    vim.api.nvim_create_autocmd("WinClosed", {
+        callback = function(args)
+            print(args.match, result_win, prompt_win, args.match == result_win, args.match == prompt_win)
+            if args.match == prompt_win then
+                vim.api.nvim_win_close(result_win, false)
+            elseif args.match == result_win then
+                vim.api.nvim_win_close(prompt_win, false)
+            end
+        end
+    })
 end, {})
 
 

@@ -64,7 +64,7 @@ end, { silent = true })
 
 
 -- Compiler Commands
-vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", {silent = true})
+vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", { silent = true })
 
 vim.keymap.set("n", "<leader>ü", function()
     local current_file = vim.fn.expand("%:t")
@@ -75,14 +75,14 @@ vim.keymap.set("n", "<leader>ü", function()
     elseif extension == "cpp" then
         local command
         if CPP_COMPILER == "clang++" then
-            vim.cmd[[:w]]
-            command = string.format("! clang++ %s -o %s.exe", current_file, cfile)
+            vim.cmd [[:w]]
+            command = string.format("! clang++ -std=c++20 %s -o %s.exe", current_file, cfile)
         elseif CPP_COMPILER == "g++" then
             command = string.format("! g++ %s -o %s", current_file, cfile)
         end
         vim.cmd(command)
     end
-end, {silent = true})
+end, { silent = true })
 
 
 -- Unbind Q
