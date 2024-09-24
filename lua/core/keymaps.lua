@@ -74,12 +74,8 @@ vim.keymap.set("n", "<leader>ü", function()
         vim.cmd(":silent ! cargo build\n")
     elseif extension == "cpp" then
         local command
-        if string.find("clang++", CPP_COMPILER) then
-            vim.cmd [[:w]]
-            command = string.format("! %s %s -o %s.exe", CPP_COMPILER, current_file, cfile)
-        elseif CPP_COMPILER == "g++" then
-            command = string.format("! g++ %s -o %s", current_file, cfile)
-        end
+        vim.cmd [[:w]]
+        command = string.format("! %s %s %s -o %s.exe", CPP_COMPILER, CPP_VERSION, current_file, cfile)
         vim.cmd(command)
     end
 end, { silent = true })

@@ -13,7 +13,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- ENVS
-CPP_COMPILER = "g++" -- "clang++ -std=c++20"
+CPP_COMPILER = "g++" -- "clang++"
+CPP_VERSION = "-std=c++20"
 PLATFORM = os.getenv("OS")
 STARTUP_IMAGE = "Tree"
 STARTUP_SIGNITURE = "Squirly"
