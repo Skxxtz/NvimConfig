@@ -1,0 +1,115 @@
+local M = {}
+M.keymaps = {
+    { mode = "n",  mod = "",         bind = "v",         explanation = "Visual Mode" },
+    { mode = "n",  mod = "Ctrl",     bind = "v",         explanation = "Visual Block Mode" },
+    { mode = "n",  mod = "",         bind = "V",         explanation = "Visual Line Mode" },
+    { mode = "n",  mod = "",         bind = "vi[delim]", explanation = "Select within [delim]" },
+    { mode = "n",  mod = "",         bind = "va[delim]", explanation = "Select within and with [delim]" },
+    { mode = "n",  mod = "",         bind = "viw",       explanation = "Select entire word" },
+    { mode = "n",  mod = "",         bind = "vf[char]",  explanation = "Select to next [char]" },
+    { mode = "n",  mod = "",         bind = "vF[char]",  explanation = "Select to previous [char]" },
+
+
+    { mode = "n",  mod = "",         bind = "C",         explanation = "Replace to end of line" },
+    { mode = "n",  mod = "",         bind = "cc",        explanation = "Replace entire line" },
+    { mode = "n",  mod = "",         bind = "cw",        explanation = "Replace to end of word" },
+    { mode = "n",  mod = "",         bind = "ciw",       explanation = "Replace entire word" },
+    { mode = "n",  mod = "",         bind = "ci[delim]", explanation = "Replace within [delim]" },
+    { mode = "n",  mod = "",         bind = "ca[delim]", explanation = "Replace within and with [delim]" },
+    { mode = "n",  mod = "",         bind = "cf[char]",  explanation = "Replace to next [char]" },
+    { mode = "n",  mod = "",         bind = "cF[char]",  explanation = "Replace to previous [char]" },
+
+    { mode = "n",  mod = "",         bind = "D",         explanation = "Delete to end of line" },
+    { mode = "n",  mod = "",         bind = "dd",        explanation = "Delete entire line" },
+    { mode = "n",  mod = "",         bind = "dw",        explanation = "Delete to end of word" },
+    { mode = "n",  mod = "",         bind = "diw",       explanation = "Delete entire word" },
+    { mode = "n",  mod = "",         bind = "di[delim]", explanation = "Delete within [delim]" },
+    { mode = "n",  mod = "",         bind = "da[delim]", explanation = "Delete within and with [delim]" },
+    { mode = "n",  mod = "",         bind = "df[char]",  explanation = "Delete to next [char]" },
+    { mode = "n",  mod = "",         bind = "dF[char]",  explanation = "Delete to previous [char]" },
+
+    { mode = "n",  mod = "",         bind = "Y",         explanation = "Yank to end of line" },
+    { mode = "n",  mod = "",         bind = "y",         explanation = "Yank entire line" },
+    { mode = "n",  mod = "",         bind = "yw",        explanation = "Yank to end of word" },
+    { mode = "n",  mod = "",         bind = "yiw",       explanation = "Yank entire word" },
+    { mode = "n",  mod = "",         bind = "yi[delim]", explanation = "Yank within [delim]" },
+    { mode = "n",  mod = "",         bind = "ya[delim]", explanation = "Yank within and with [delim]" },
+    { mode = "n",  mod = "<leader>", bind = "y",         explanation = "Yank into sytem clipboard" },
+    { mode = "n",  mod = "",         bind = "yf[char]",  explanation = "Yank to next [char]" },
+    { mode = "n",  mod = "",         bind = "yF[char]",  explanation = "Yank to previous [char]" },
+
+    { mode = "n",  mod = "",         bind = "u",         explanation = "Undo" },
+    { mode = "n",  mod = "Ctrl",     bind = "r",         explanation = "Redo" },
+    { mode = "n",  mod = "",         bind = "q[buffer]", explanation = "Record macro into [buffer]" },
+    { mode = "n",  mod = "",         bind = "@[buffer]", explanation = "Replay macro from [buffer]" },
+    { mode = "n",  mod = "",         bind = "=",         explanation = "Format line" },
+    { mode = "n",  mod = "",         bind = "gg=G",      explanation = "Format entire document" },
+
+    { mode = "n",  mod = "",         bind = "P",         explanation = "Paste into new line above" },
+    { mode = "n",  mod = "",         bind = "p",         explanation = "Paste into new line below" },
+    { mode = "n",  mod = "<leader>", bind = "p",         explanation = "Paste without loosing buffer" },
+    { mode = "n",  mod = "",         bind = "O",         explanation = "Write into new line above" },
+    { mode = "n",  mod = "",         bind = "o",         explanation = "Write into new line below" },
+    { mode = "n",  mod = "",         bind = "s",         explanation = "Replace char and enter Insert Mode" },
+    { mode = "n",  mod = "<leader>", bind = "s",         explanation = "Replace all occurrences of word" },
+    { mode = "n",  mod = "",         bind = "I",         explanation = "Insert at start of line" },
+    { mode = "n",  mod = "",         bind = "A",         explanation = "Append to end of line" },
+    { mode = "v*", mod = "",         bind = "K",         explanation = "Move line(s) up" },
+    { mode = "v*", mod = "",         bind = "J",         explanation = "Move line(s) down" },
+
+    { mode = "n",  mod = "",         bind = "zR",        explanation = "Open all folds" },
+    { mode = "n",  mod = "",         bind = "zM",        explanation = "Close all folds" },
+    { mode = "n",  mod = "",         bind = "zo",        explanation = "Open current fold" },
+    { mode = "n",  mod = "",         bind = "zc",        explanation = "Close current fold" },
+    { mode = "vl", mod = "",         bind = "zf",        explanation = "Create new fold from lines" },
+
+    { mode = "n",  mod = "",         bind = "k",         explanation = "Move up" },
+    { mode = "n",  mod = "",         bind = "j",         explanation = "Move down" },
+    { mode = "n",  mod = "",         bind = "h",         explanation = "Move left" },
+    { mode = "n",  mod = "",         bind = "l",         explanation = "Move right" },
+    { mode = "n",  mod = "",         bind = "gg",        explanation = "Go to top" },
+    { mode = "n",  mod = "",         bind = "G",         explanation = "Go to bottom" },
+    { mode = "n",  mod = "",         bind = "H",         explanation = "Move cursor to top of screen" },
+    { mode = "n",  mod = "",         bind = "M",         explanation = "Move cursor to middle of screen" },
+    { mode = "n",  mod = "",         bind = "L",         explanation = "Move cursor to bottom of screen" },
+    { mode = "n",  mod = "",         bind = "zz",        explanation = "Shift editor to center" },
+    { mode = "n",  mod = "",         bind = "{",         explanation = "Go to start of block" },
+    { mode = "n",  mod = "",         bind = "}",         explanation = "Go to end of block" },
+
+    { mode = "n",  mod = "",         bind = "w",         explanation = "Jump to start of next word" },
+    { mode = "n",  mod = "",         bind = "b",         explanation = "Jump to start of previous word" },
+    { mode = "n",  mod = "",         bind = "e",         explanation = "Jump to end of next word" },
+    { mode = "n",  mod = "",         bind = "%",         explanation = "Jump to closing/opening syntax" },
+
+    { mode = "n",  mod = "",         bind = "n",         explanation = "Next search result" },
+    { mode = "n",  mod = "",         bind = "N",         explanation = "Previous search result" },
+
+
+
+
+    -- Custom Commands
+    { mode = "n",  mod = "",         bind = "gd",        explanation = "Go to definition" },
+    { mode = "n",  mod = "",         bind = "gD",        explanation = "Go to declaration" },
+    { mode = "n",  mod = "",         bind = "gr",        explanation = "Go to reference" },
+    { mode = "n",  mod = "",         bind = "gi",        explanation = "Go to implementation" },
+    { mode = "n",  mod = "<leader>", bind = "D",         explanation = "Go to type definition" },
+    { mode = "n",  mod = "",         bind = "K",         explanation = "Info" },
+    { mode = "n",  mod = "<leader>", bind = "wa",        explanation = "Add workspace folder" },
+    { mode = "n",  mod = "<leader>", bind = "wr",        explanation = "Remove workspace folder" },
+    { mode = "n",  mod = "<leader>", bind = "wl",        explanation = "List workspace folders" },
+    { mode = "n",  mod = "<leader>", bind = "rn",        explanation = "Rename" },
+    { mode = "n",  mod = "<leader>", bind = "ca",        explanation = "Code action" },
+    { mode = "n",  mod = "<leader>", bind = "f",         explanation = "Format buffer" },
+
+    { mode = "n",  mod = "<leader>", bind = "pv",        explanation = "Netrw" },
+    { mode = "n",  mod = "<leader>", bind = "ü",         explanation = "Make current file executeable" },
+    { mode = "n",  mod = "<leader>", bind = "ö",         explanation = "Run this file" },
+    { mode = "n",  mod = "",         bind = "J",         explanation = "Join line below to this one" },
+    { mode = "n",  mod = "",         bind = "K",         explanation = "Split line to new line here" },
+
+    { mode = "n",  mod = "<leader>", bind = "gc",        explanation = "Git add . and commit -m" },
+    { mode = "n",  mod = "<leader>", bind = "gp",        explanation = "Git push" },
+    { mode = "n",  mod = "<leader>", bind = "get",       explanation = "Git stash local changes and pull" },
+}
+
+return M

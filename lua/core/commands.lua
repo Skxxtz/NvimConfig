@@ -27,12 +27,11 @@ end
 
 function PrintOutput(output, time)
     local lines = vim.split(output, "\n")
-    for _,line in ipairs(lines) do
-      print(line)
+    for _, line in ipairs(lines) do
+        print(line)
     end
     AddOrReplaceTimer(time, ClearTerm)
 end
-
 
 function ClearTerm()
     vim.cmd [[:echo ""]]
@@ -80,6 +79,7 @@ end, {
 })
 
 function RunCompiledProgram()
+    local file = vim.fn.expand("%:p:r")
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
@@ -87,16 +87,12 @@ function RunCompiledProgram()
     elseif extension == "cpp" then
         local command
         if PLATFORM == "Windows_NT" then
-            command = string.format("! .\\%s.exe", cfile)
+            command = string.format("! .\\%s.exe", file)
         else
-            command = string.format("! ./%s", cfile)
+            command = string.format("! ./%s", file)
         end
         vim.cmd(command)
     elseif extension == "py" then
-        vim.cmd(string.format("! python %s.py", cfile))
+        vim.cmd(string.format("! python %s.py", file))
     end
 end
-
-
-
-

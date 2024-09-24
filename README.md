@@ -71,6 +71,8 @@
 | n | | zz | Bring cursor to middle without movin lines |
 
 
+
+
 ### Visual Mode
 | Mode | Modifier | Bind | Explanation |
 | --------------- | --------------- | --------------- | --------------- |
@@ -127,7 +129,6 @@
 | n | | Q | UNBOUND |
 | n | | K | Insert line above |
 | n | | J | Insert line below |
-| n | | Tab | Change Theme |
 
 ### Git Binds
 | Mode | Modifier | Bind | Explanation |
