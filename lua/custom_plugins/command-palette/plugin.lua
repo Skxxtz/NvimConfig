@@ -42,7 +42,7 @@ end
 
 
 
-function open_window(win_type)
+local function open_window(win_type)
     local buf = vim.api.nvim_create_buf(false, true)
     local lines = vim.opt.lines:get()
     local cols = vim.opt.columns:get()
@@ -72,37 +72,65 @@ function open_window(win_type)
     return buf, win
 end
 
-local function format(results)
+local function format(results, padding)
     local lines = {}
+    local syntax_cols = {}
+    local p = padding
+    local x_offset = p.mode_max + p.mod_max + p.bind_max
+    if #results > 0 then
+        for _, row in ipairs(results) do
+            local mode = row.mode .. string.rep(" ", p.mode_max - #row.mode)
+            local mod = row.mod .. string.rep(" ", p.mod_max - #row.mod)
+            local bind = row.bind .. string.rep(" ", p.bind_max - vim.fn.strwidth(row.bind))
+            local expl = row.explanation .. string.rep(" ", p.expl_max - #row.explanation)
+            local new_indices = {}
+            for _, index in ipairs(row.indices) do
+                table.insert(new_indices, index + x_offset)
+            end
+            table.insert(syntax_cols, new_indices)
+            table.insert(lines, mode .. mod .. bind .. expl)
+        end
+    end
+    return lines, syntax_cols
+end
+local function highlight(result_buf, cols)
+    if cols then
+        vim.api.nvim_set_hl(0, "Green", { fg = "#24B364" })
+        for i, row in ipairs(cols) do
+            for _, col in ipairs(row) do
+                vim.api.nvim_buf_add_highlight(result_buf, 0, "Green", i - 1, col - 1, col)
+            end
+        end
+    end
+end
+
+local function get_paddings()
+    local keymaps = maps.keymaps
     local modes = {}
     local mods = {}
     local binds = {}
     local explanations = {}
-    if #results > 0 then
-        for _, row in ipairs(results) do
-            table.insert(modes, #row.mode)
-            table.insert(mods, #row.mod)
-            table.insert(binds, #row.bind)
-            table.insert(explanations, #row.explanation)
-        end
-        local mode_max = math.max(unpack(modes)) + 5
-        local mod_max = math.max(unpack(mods)) + 5
-        local bind_max = math.max(unpack(binds)) + 10
-        local expl_max = math.max(unpack(explanations)) + 3
-        for i, row in ipairs(results) do
-            local mode = row.mode .. string.rep(" ", mode_max - modes[i])
-            local mod = row.mod .. string.rep(" ", mod_max - mods[i])
-            local bind = row.bind .. string.rep(" ", bind_max - binds[i])
-            local expl = row.explanation .. string.rep(" ", expl_max - explanations[i])
-            table.insert(lines, "  " .. mode .. mod .. bind .. expl)
-        end
+    for _, row in ipairs(keymaps) do
+        table.insert(modes, vim.fn.strwidth(row.mode))
+        table.insert(mods, vim.fn.strwidth(row.mod))
+        table.insert(binds, vim.fn.strwidth(row.bind))
+        table.insert(explanations, vim.fn.strwidth(row.explanation))
     end
-    return lines
+    local mode_max = math.max(unpack(modes)) + 5
+    local mod_max = math.max(unpack(mods)) + 5
+    local bind_max = math.max(unpack(binds)) + 10
+    local expl_max = math.max(unpack(explanations)) + 3
+    return { mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max }
 end
 
 vim.api.nvim_create_user_command("SearchCommand", function()
+    local paddings = get_paddings()
     local result_buf, result_win = open_window("result")
     local prompt_buf, prompt_win = open_window("prompt")
+
+    vim.bo[result_buf].buftype = "nofile"
+    vim.bo[result_buf].bufhidden = "wipe"
+    vim.bo[result_buf].modifiable = false
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "<Esc>", ":q<CR>", { silent = true })
@@ -116,18 +144,15 @@ vim.api.nvim_create_user_command("SearchCommand", function()
             for _, line in ipairs(search_term) do
                 vim.cmd('echo "' .. line .. '"')
                 if line then
-                    local lines = {}
                     local results = fzf(maps.keymaps, line)
+                    local lines, cols = {""}, {}
                     if results then
-                        for _, row in ipairs(results) do
-                            table.insert(lines,
-                                row.mode .. "   " .. row.mod .. "    " .. row.bind .. "    " .. row.explanation)
-                        end
-                        lines = format(results)
-                        vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
-                    else
-                        vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, { "" })
+                        lines, cols = format(results, paddings)
                     end
+                    vim.bo[result_buf].modifiable = true
+                    vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
+                    vim.bo[result_buf].modifiable = false
+                    highlight(result_buf, cols)
                 end
             end
         end

@@ -38,10 +38,6 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- replace all occurrences of word under cursor
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- make bash script executeable
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
-
-
 -- Git keybind
 vim.keymap.set("n", "<leader>gc", function()
     vim.fn.system("git add .")
@@ -67,7 +63,7 @@ end, { silent = true })
 vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", { silent = true })
 
 vim.keymap.set("n", "<leader>ü", function()
-    local current_file = vim.fn.expand("%:t")
+    local current_file = vim.fn.expand("%:p")
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
@@ -81,6 +77,8 @@ vim.keymap.set("n", "<leader>ü", function()
         vim.cmd [[:w]]
         command = string.format("! %s %s %s -o %s%s", CPP_COMPILER, CPP_VERSION, current_file, cfile, executeable_ext)
         vim.cmd(command)
+    elseif extension == "sh" and PLATFORM ~= "Windows_NT" then
+        vim.cmd(string.format("!chmod +x %s", current_file))
     end
 end, { silent = true })
 
