@@ -37,7 +37,7 @@ vim.wo.relativenumber = true
 
 
 vim.api.nvim_create_augroup("AutoFormat", { clear = true })
-if "" == "b" then
+if FormatOnSave then
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = "AutoFormat",
         pattern = "*",

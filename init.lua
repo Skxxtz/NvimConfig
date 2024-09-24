@@ -19,6 +19,8 @@ PLATFORM = os.getenv("OS")
 STARTUP_IMAGE = "Tree"
 STARTUP_SIGNITURE = "Squirly"
 
+FormatOnSave = false
+
 require("core.commands")
 require("core.keymaps")
 require("core.plugins")
