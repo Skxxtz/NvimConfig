@@ -94,7 +94,7 @@ local function format(results)
             local mod = row.mod .. string.rep(" ", mod_max - mods[i])
             local bind = row.bind .. string.rep(" ", bind_max - binds[i])
             local expl = row.explanation .. string.rep(" ", expl_max - explanations[i])
-            table.insert(lines, mode .. mod .. bind .. expl)
+            table.insert(lines, "  " .. mode .. mod .. bind .. expl)
         end
     end
     return lines
