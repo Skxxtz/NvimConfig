@@ -73,9 +73,13 @@ vim.keymap.set("n", "<leader>ü", function()
     if extension == "rs" then
         vim.cmd(":silent ! cargo build\n")
     elseif extension == "cpp" then
+        local executeable_ext = ""
         local command
+        if PLATFORM == "Windows_NT" then
+            executeable_ext = ".exe"
+        end
         vim.cmd [[:w]]
-        command = string.format("! %s %s %s -o %s.exe", CPP_COMPILER, CPP_VERSION, current_file, cfile)
+        command = string.format("! %s %s %s -o %s%s", CPP_COMPILER, CPP_VERSION, current_file, cfile, executeable_ext)
         vim.cmd(command)
     end
 end, { silent = true })
