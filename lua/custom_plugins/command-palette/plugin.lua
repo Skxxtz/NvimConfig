@@ -85,15 +85,16 @@ local function format(results)
             table.insert(binds, #row.bind)
             table.insert(explanations, #row.explanation)
         end
-        local mode_max = math.max(unpack(modes)) + 2
-        local mod_max = math.max(unpack(mods)) + 2
-        local bind_max = math.max(unpack(binds)) + 2
+        local mode_max = math.max(unpack(modes)) + 5
+        local mod_max = math.max(unpack(mods)) + 5
+        local bind_max = math.max(unpack(binds)) + 10
         local expl_max = math.max(unpack(explanations)) + 3
         for i, row in ipairs(results) do
-            local mode_padding = mode_max - modes[i]
-            local mod_padding = mod_max - mods[i]
-            local bind_padding = bind_max - binds[i]
-            local expl_padding = string.rep(" ", expl_max - explanations[i])
+            local mode = row.mode .. string.rep(" ", mode_max - modes[i])
+            local mod = row.mod .. string.rep(" ", mod_max - mods[i])
+            local bind = row.bind .. string.rep(" ", bind_max - binds[i])
+            local expl = row.explanation .. string.rep(" ", expl_max - explanations[i])
+            table.insert(lines, mode .. mod .. bind .. expl)
         end
     end
 
