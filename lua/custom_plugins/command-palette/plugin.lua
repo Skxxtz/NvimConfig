@@ -72,6 +72,35 @@ function open_window(win_type)
     return buf, win
 end
 
+local function format(results)
+    local lines = {}
+    local modes = {}
+    local mods = {}
+    local binds = {}
+    local explanations = {}
+    if #results > 0 then
+        for _, row in ipairs(results) do
+            table.insert(modes, #row.mode)
+            table.insert(mods, #row.mod)
+            table.insert(binds, #row.bind)
+            table.insert(explanations, #row.explanation)
+        end
+        local mode_max = math.max(unpack(modes)) + 2
+        local mod_max = math.max(unpack(mods)) + 2
+        local bind_max = math.max(unpack(binds)) + 2
+        local expl_max = math.max(unpack(explanations)) + 3
+        for i, row in ipairs(results) do
+            local mode_padding = mode_max - modes[i]
+            local mod_padding = mod_max - mods[i]
+            local bind_padding = bind_max - binds[i]
+            local expl_padding = string.rep(" ", expl_max - explanations[i])
+            local line = 
+        end
+    end
+
+    return lines
+end
+
 vim.api.nvim_create_user_command("SearchCommand", function()
     local result_buf, result_win = open_window("result")
     local prompt_buf, prompt_win = open_window("prompt")
@@ -91,6 +120,7 @@ vim.api.nvim_create_user_command("SearchCommand", function()
                             table.insert(lines,
                                 row.mode .. "   " .. row.mod .. "    " .. row.bind .. "    " .. row.explanation)
                         end
+                        lines = format(results)
                         vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
                     else
                         vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, { "" })

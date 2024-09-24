@@ -87,7 +87,7 @@ function RunCompiledProgram()
     elseif extension == "cpp" then
         local command
         if PLATFORM == "Windows_NT" then
-            command = string.format("! .\\%s.exe", file)
+            command = string.format("! %s.exe", file)
         else
             command = string.format("! ./%s", file)
         end
