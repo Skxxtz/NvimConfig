@@ -24,6 +24,4 @@ require("core.plugins")
 require("core.plugin_config")
 require("core.options")
 require("custom_plugins.startup")
-
-
-
+require("custom_plugins.command-palette")
