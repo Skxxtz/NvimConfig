@@ -94,7 +94,6 @@ local function format(results)
             local mod_padding = mod_max - mods[i]
             local bind_padding = bind_max - binds[i]
             local expl_padding = string.rep(" ", expl_max - explanations[i])
-            local line = 
         end
     end
 
