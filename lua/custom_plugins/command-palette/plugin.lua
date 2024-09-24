@@ -6,7 +6,6 @@ local function fzf(list, query)
     local letters = {}
     local unique_letters = {}
     query = query:gsub("^%s*(.-)%s*$", "%1")
-    print(query)
     for i = 1, #query do
         local letter = query:sub(i, i)
         letters[letter] = 0
@@ -37,6 +36,11 @@ local function fzf(list, query)
             end
         end
         return possible_matches
+    else
+        for _, row in ipairs(list) do
+            row["indices"] = {}
+        end
+        return list
     end
 end
 
@@ -71,6 +75,7 @@ local function open_window(win_type)
     vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:Normal")
     return buf, win
 end
+
 
 local function format(results, padding)
     local lines = {}
@@ -123,6 +128,25 @@ local function get_paddings()
     return { mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max }
 end
 
+local function draw(search_term, result_buf, paddings)
+    local search_for = ""
+    for _, line in ipairs(search_term) do
+        if line then
+            search_for = line
+        end
+    end
+
+    local results = fzf(maps.keymaps, search_for)
+    local lines, cols = { "" }, {}
+    if results then
+        lines, cols = format(results, paddings)
+    end
+    vim.bo[result_buf].modifiable = true
+    vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
+    vim.bo[result_buf].modifiable = false
+    highlight(result_buf, cols)
+end
+
 vim.api.nvim_create_user_command("SearchCommand", function()
     local paddings = get_paddings()
     local result_buf, result_win = open_window("result")
@@ -137,24 +161,12 @@ vim.api.nvim_create_user_command("SearchCommand", function()
     vim.api.nvim_buf_set_keymap(result_buf, "n", "<Esc>", ":q<CR>", { silent = true })
     vim.api.nvim_feedkeys("i", "n", false)
 
+    draw({""}, result_buf, paddings)
     vim.api.nvim_create_autocmd("TextChangedI", {
         buffer = prompt_buf,
         callback = function()
             local search_term = vim.api.nvim_buf_get_lines(prompt_buf, 0, -1, false)
-            for _, line in ipairs(search_term) do
-                vim.cmd('echo "' .. line .. '"')
-                if line then
-                    local results = fzf(maps.keymaps, line)
-                    local lines, cols = {""}, {}
-                    if results then
-                        lines, cols = format(results, paddings)
-                    end
-                    vim.bo[result_buf].modifiable = true
-                    vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
-                    vim.bo[result_buf].modifiable = false
-                    highlight(result_buf, cols)
-                end
-            end
+            draw(search_term, result_buf, paddings)
         end
     })
 
