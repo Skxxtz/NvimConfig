@@ -17,7 +17,7 @@ local function fzf(list, query)
     if table.concat(unique_letters) ~= "" then
         local pattern = string.format("[^%s]", table.concat(unique_letters, ""))
         for _, row in ipairs(list) do
-            local explanation = row.explanation
+            local explanation = string.lower(row.explanation)
             local hot_explanation = explanation:gsub(pattern, "")
             local cold_explanation = explanation:gsub(pattern, "0")
             local pattern_match = string.find(hot_explanation, query, 1, true)
@@ -39,7 +39,6 @@ local function fzf(list, query)
         return possible_matches
     end
 end
-
 
 
 
@@ -76,7 +75,6 @@ end
 vim.api.nvim_create_user_command("SearchCommand", function()
     local result_buf, result_win = open_window("result")
     local prompt_buf, prompt_win = open_window("prompt")
-
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_create_autocmd("TextChangedI", {
@@ -104,6 +102,7 @@ vim.api.nvim_create_user_command("SearchCommand", function()
     )
 end, {})
 
-vim.keymap.set("n", "<leader>cp", function()
+
+vim.keymap.set("n", "<leader>oc", function()
     vim.cmd(":SearchCommand")
 end)
