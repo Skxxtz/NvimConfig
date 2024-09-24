@@ -76,6 +76,7 @@ end
 vim.api.nvim_create_user_command("SearchCommand", function()
     local result_buf, result_win = open_window("result")
     local prompt_buf, prompt_win = open_window("prompt")
+
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_create_autocmd("TextChangedI", {
@@ -102,3 +103,7 @@ vim.api.nvim_create_user_command("SearchCommand", function()
     }
     )
 end, {})
+
+vim.keymap.set("n", "<leader>cp", function()
+    vim.cmd(":SearchCommand")
+end)
