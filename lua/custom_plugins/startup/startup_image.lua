@@ -62,13 +62,14 @@ local function GetMaxWidth(list)
 end
 
 local function Draw(width, height, header_image, signiture, padding, options)
-    if height < #header_image + #signiture + #padding + #options then
+    local header_image_width = GetMaxWidth(header_image)
+    local signiture_width = GetMaxWidth(signiture)
+    local options_width = GetMaxWidth(options)
+    local total_width = header_image_width + signiture_width + options_width
+    if height < #header_image + #signiture + #padding + #options and width > total_width then
         local new_image = {}
         local new_options = {}
         local new_content = {}
-        local header_image_width = GetMaxWidth(header_image)
-        local signiture_width = GetMaxWidth(signiture)
-        local options_width = GetMaxWidth(options)
         local image_width = math.max(header_image_width, signiture_width)
         local side_padding = math.floor((width - (image_width + options_width)) / 3)
         local middle =  width / 2
@@ -97,7 +98,8 @@ local function Draw(width, height, header_image, signiture, padding, options)
 
         ColorLinesHor(#new_content, math.floor(middle))
 
-    else
+
+    elseif height > #header_image + #signiture + #padding + #options then
         local line_count = #header_image + #signiture
 
         ShowLines(header_image, width)
@@ -105,6 +107,9 @@ local function Draw(width, height, header_image, signiture, padding, options)
         ShowLines(padding, width)
         ShowLines(options, width)
         ColorLinesVert(line_count)
+    else
+        ShowLines(header_image, width)
+        ColorLinesVert(height)
     end
 end
 
