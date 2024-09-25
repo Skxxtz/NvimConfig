@@ -13,7 +13,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- ENVS
-
 require("data.settings")
 require("core.commands")
 require("core.keymaps")

@@ -166,7 +166,7 @@ end
 
 function CmdPalletteHelpers.Highlight(result_buf, cols)
     if cols then
-        vim.api.nvim_set_hl(0, "Green", { fg = "#24B364" })
+        vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.CommandPallettePlugin.AccentColor })
         for i, row in ipairs(cols) do
             for _, col in ipairs(row) do
                 vim.api.nvim_buf_add_highlight(result_buf, 0, "Green", i - 1, col - 1, col)
@@ -196,10 +196,14 @@ function CmdPalletteHelpers.GetPaddings(width)
 
     local total_width = left_pad + mode_max + mod_max + bind_max + expl_max + right_pad
     if total_width + 20 < width then
-        local diff = width - (total_width + 20)
         mode_max = mode_max + 5
         mod_max = mod_max + 5
         bind_max = bind_max + 10
+    else
+        local diff = width - total_width
+        mode_max = mode_max + math.floor(diff * 0.25)
+        mod_max = mod_max + math.floor(diff * 0.25)
+        bind_max = bind_max + math.floor(diff *0.5)
     end
     return { left_pad=left_pad, mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
 end

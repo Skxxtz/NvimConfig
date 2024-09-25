@@ -29,14 +29,14 @@ local function ShowLines(line_content, width)
 end
 
 local function ColorLinesVert(line_count)
-    vim.api.nvim_set_hl(0, "Green", { fg = "#24B364" })
+    vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.StartUpPlugin.AccentColor })
     for i = 0, line_count do
         vim.api.nvim_buf_add_highlight(0, -1, "Green", i, 0, -1)
     end
 end
 
 local function ColorLinesHor(line_count, col_end)
-    vim.api.nvim_set_hl(0, "Green", { fg = "#24B364"})
+    vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.StartUpPlugin.AccentColor})
     for i = 0, line_count do
         vim.api.nvim_buf_add_highlight(0, -1, "Green", i, 0, col_end)
     end
