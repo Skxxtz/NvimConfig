@@ -228,9 +228,8 @@ function CmdPalletteHelpers.Draw(search_term, result_buf, paddings)
     end
     vim.bo[result_buf].modifiable = true
     vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
-    -- vim.bo[result_buf].modifiable = false
-    --  CmdPalletteHelpers.Highlight(result_buf, cols)
-    --  v
+    vim.bo[result_buf].modifiable = false
+    CmdPalletteHelpers.Highlight(result_buf, cols)
 end
 
 
