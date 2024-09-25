@@ -73,7 +73,7 @@ local function open_window(win_type)
         title_pos = "center",
     })
     vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:Normal")
-    return buf, win
+    return buf, win, width
 end
 
 
@@ -81,9 +81,10 @@ local function format(results, padding)
     local lines = {}
     local syntax_cols = {}
     local p = padding
-    local x_offset = p.mode_max + p.mod_max + p.bind_max
+    local x_offset = p.left_pad + p.mode_max + p.mod_max + p.bind_max
     if #results > 0 then
         for _, row in ipairs(results) do
+            local left_padding = string.rep(" ", p.left_pad)
             local mode = row.mode .. string.rep(" ", p.mode_max - #row.mode)
             local mod = row.mod .. string.rep(" ", p.mod_max - #row.mod)
             local bind = row.bind .. string.rep(" ", p.bind_max - vim.fn.strwidth(row.bind))
@@ -93,11 +94,12 @@ local function format(results, padding)
                 table.insert(new_indices, index + x_offset)
             end
             table.insert(syntax_cols, new_indices)
-            table.insert(lines, mode .. mod .. bind .. expl)
+            table.insert(lines, left_padding .. mode .. mod .. bind .. expl)
         end
     end
     return lines, syntax_cols
 end
+
 local function highlight(result_buf, cols)
     if cols then
         vim.api.nvim_set_hl(0, "Green", { fg = "#24B364" })
@@ -109,7 +111,7 @@ local function highlight(result_buf, cols)
     end
 end
 
-local function get_paddings()
+local function get_paddings(width)
     local keymaps = maps.keymaps
     local modes = {}
     local mods = {}
@@ -121,11 +123,22 @@ local function get_paddings()
         table.insert(binds, vim.fn.strwidth(row.bind))
         table.insert(explanations, vim.fn.strwidth(row.explanation))
     end
-    local mode_max = math.max(unpack(modes)) + 5
-    local mod_max = math.max(unpack(mods)) + 5
-    local bind_max = math.max(unpack(binds)) + 10
-    local expl_max = math.max(unpack(explanations)) + 3
-    return { mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max }
+    local left_pad = 2
+    local mode_max = math.max(unpack(modes))
+    local mod_max = math.max(unpack(mods))
+    local bind_max = math.max(unpack(binds))
+    local expl_max = math.max(unpack(explanations))
+    local right_pad = 2
+
+    local total_width = left_pad + mode_max + mod_max + bind_max + expl_max + right_pad
+    if total_width + 20 < width then
+        local diff = width - (total_width + 20)
+        mode_max = mode_max + 5
+        mod_max = mod_max + 5
+        bind_max = bind_max + 10
+    end
+
+    return { left_pad=left_pad, mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
 end
 
 local function draw(search_term, result_buf, paddings)
@@ -148,9 +161,9 @@ local function draw(search_term, result_buf, paddings)
 end
 
 vim.api.nvim_create_user_command("SearchCommand", function()
-    local paddings = get_paddings()
-    local result_buf, result_win = open_window("result")
-    local prompt_buf, prompt_win = open_window("prompt")
+    local result_buf, result_win, result_wid = open_window("result")
+    local prompt_buf, prompt_win, prompt_wid = open_window("prompt")
+    local paddings = get_paddings(result_wid)
 
     vim.bo[result_buf].buftype = "nofile"
     vim.bo[result_buf].bufhidden = "wipe"
