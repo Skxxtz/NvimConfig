@@ -1,4 +1,5 @@
-require("custom_plugins.startup.headers")
+local sources = require("custom_plugins.startup.headers")
+
 
 local function CenterString(str, w)
     local display_width = vim.fn.strwidth(str)
@@ -119,8 +120,8 @@ end
 
 
 function StartupScreen(buffer, original_options)
-    local header_image = GetHeader()
-    local signiture = GetSigniture()
+    local header_image = sources.get_header()
+    local signiture = sources.get_signiture()
     local padding = {"", "", "",}
     local options = {
         "",

@@ -71,13 +71,13 @@ vim.keymap.set("n", "<leader>ü", function()
     elseif extension == "cpp" then
         local executeable_ext = ""
         local command
-        if PLATFORM == "Windows_NT" then
+        if UserSettings.Os.Platform == "Windows_NT" then
             executeable_ext = ".exe"
         end
         vim.cmd [[:w]]
-        command = string.format("! %s %s %s -o %s%s", CPP_COMPILER, CPP_VERSION, current_file, cfile, executeable_ext)
+        command = string.format("! %s %s %s -o %s%s", UserSettings.Cpp.Compiler, UserSettings.Cpp.Version, current_file, cfile, executeable_ext)
         vim.cmd(command)
-    elseif extension == "sh" and PLATFORM ~= "Windows_NT" then
+    elseif extension == "sh" and UserSettings.Os.Platform ~= "Windows_NT" then
         vim.cmd(string.format("!chmod +x %s", current_file))
     end
 end, { silent = true })

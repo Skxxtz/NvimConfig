@@ -1,4 +1,5 @@
-function GetHeader()
+M = {}
+function M.get_header()
     local sign_header = {
         "                         ",
         "                         ",
@@ -60,13 +61,13 @@ function GetHeader()
     }
 
     local header_image
-    if STARTUP_IMAGE == "Tree" then
+    if UserSettings.StartUpPlugin.Header == "Tree" then
         header_image = tree_header
-    elseif STARTUP_IMAGE == "Sign" then
+    elseif UserSettings.StartUpPlugin.Header == "Sign" then
         header_image = sign_header
-    elseif STARTUP_IMAGE == "Nvim_Text" then
+    elseif UserSettings.StartUpPlugin.Header == "Nvim_Text" then
         header_image = nvim_text
-    elseif STARTUP_IMAGE == "Maya" then
+    elseif UserSettings.StartUpPlugin.Header == "Maya" then
         header_image = maya_header
     else
         header_image = tree_header
@@ -77,7 +78,7 @@ end
 
 
 
-function GetSigniture()
+function M.get_signiture()
     local squirly = {
             "┳┓ ┓┏ ┳ ┳┳┓",
             "┃┃ ┃┃ ┃ ┃┃┃",
@@ -85,10 +86,12 @@ function GetSigniture()
     }
 
     local header_signiture
-    if STARTUP_SIGNITURE == "Squirly" then
+    if UserSettings.StartUpPlugin.Signiture == "Squirly" then
         header_signiture = squirly
     else
         header_signiture = squirly
     end
     return header_signiture
 end
+
+return M
