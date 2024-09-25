@@ -73,7 +73,9 @@ function CmdPallette:Show()
 
     vim.bo[result_buf].buftype = "nofile"
     vim.bo[result_buf].bufhidden = "wipe"
-    vim.bo[result_buf].modifiable = false
+    vim.bo[result_buf].filetype = "CommandPallette"
+    vim.bo[prompt_buf].filetype = "CommandPallette"
+    vim.bo[result_buf].modifiable = true
     vim.api.nvim_feedkeys("i", "n", false)
 
     CmdPalletteHelpers.Draw({""}, result_buf, paddings)
@@ -95,9 +97,11 @@ function CmdPalletteHelpers.AttatchEvents(prompt_buf, prompt_win, result_buf, re
             local win_id = tonumber(args.match)
             if win_id == result_win then
                 vim.api.nvim_win_close(prompt_win, false)
+
             elseif win_id == prompt_win then
                 vim.api.nvim_win_close(result_win, false)
             end
+
         end
     })
 end
@@ -108,6 +112,7 @@ function CmdPalletteHelpers.AttatchBinds(prompt_buf, result_buf)
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "<Esc>", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(result_buf, "n", "<Esc>", ":q<CR>", { silent = true })
 end
+
 
 
 function CmdPalletteHelpers.OpenWindow(win_type)
@@ -223,9 +228,9 @@ function CmdPalletteHelpers.Draw(search_term, result_buf, paddings)
     end
     vim.bo[result_buf].modifiable = true
     vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
-    vim.bo[result_buf].modifiable = false
-    CmdPalletteHelpers.Highlight(result_buf, cols)
-    return nil
+    -- vim.bo[result_buf].modifiable = false
+    --  CmdPalletteHelpers.Highlight(result_buf, cols)
+    --  v
 end
 
 

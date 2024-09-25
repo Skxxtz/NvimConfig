@@ -1,7 +1,7 @@
 local M = {}
 M.keymaps = {
     { mode = "n",   mod = "",       bind = "v",                     explanation = "Visual Mode" },
-    { mode = "n",   mod = "Ctrl",   bind = "v",                     explanation = "Visual Block Mode" },
+    { mode = "n",   mod = "<crtl>",   bind = "v",                     explanation = "Visual Block Mode" },
     { mode = "n",   mod = "",       bind = "V",                     explanation = "Visual Line Mode" },
     { mode = "n",   mod = "",       bind = "vf[char]",              explanation = "Select to next [char]" },
     { mode = "n",   mod = "",       bind = "vF[char]",              explanation = "Select to previous [char]" },
@@ -48,7 +48,7 @@ M.keymaps = {
     { mode = "n",   mod = "",       bind = "y(i/a)p",               explanation = "Yank current/(and up to next) paragraph" },
 
     { mode = "n",   mod = "",       bind = "u",                     explanation = "Undo" },
-    { mode = "n",   mod = "Ctrl",   bind = "r",                     explanation = "Redo" },
+    { mode = "n",   mod = "<crtl>",   bind = "r",                     explanation = "Redo" },
     { mode = "n",   mod = "",       bind = "q[buffer]",             explanation = "Record macro into [buffer]" },
     { mode = "n",   mod = "",       bind = "@[buffer]",             explanation = "Replay macro from [buffer]" },
     { mode = "n",   mod = "",       bind = "==",                    explanation = "Format line" },
