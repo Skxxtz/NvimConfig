@@ -1,7 +1,29 @@
 local maps = require("custom_plugins.command-palette.maps")
 
 
-local function fzf(list, query)
+CmdPallette = CmdPallette or {}
+CmdPalletteHelpers = CmdPalletteHelpers or {}
+
+function CmdPallette:new()
+    local instance = {}
+    setmetatable(instance, self)
+    self.__index = self
+
+    instance:init()
+    return instance
+end
+
+
+function CmdPallette:init()
+    vim.api.nvim_create_user_command("CmdPalletteShow", function()
+        self:Show()
+    end, {})
+    vim.keymap.set("n", "<leader>oc", function()
+        vim.cmd(":CmdPalletteShow")
+    end)
+end
+
+function CmdPallette.fzf(list, query)
     local possible_matches = {}
     local letters = {}
     local unique_letters = {}
@@ -44,9 +66,51 @@ local function fzf(list, query)
     end
 end
 
+function CmdPallette:Show()
+    local result_buf, result_win, result_wid = CmdPalletteHelpers.OpenWindow("result")
+    local prompt_buf, prompt_win, _ = CmdPalletteHelpers.OpenWindow("prompt")
+    local paddings = CmdPalletteHelpers.GetPaddings(result_wid)
+
+    vim.bo[result_buf].buftype = "nofile"
+    vim.bo[result_buf].bufhidden = "wipe"
+    vim.bo[result_buf].modifiable = false
+    vim.api.nvim_feedkeys("i", "n", false)
+
+    CmdPalletteHelpers.Draw({""}, result_buf, paddings)
+    CmdPalletteHelpers.AttatchBinds(prompt_buf, result_buf)
+    CmdPalletteHelpers.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, paddings)
+end
+
+function CmdPalletteHelpers.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, paddings)
+    vim.api.nvim_create_autocmd("TextChangedI", {
+        buffer = prompt_buf,
+        callback = function()
+            local search_term = vim.api.nvim_buf_get_lines(prompt_buf, 0, -1, false)
+            CmdPalletteHelpers.Draw(search_term, result_buf, paddings)
+        end
+    })
+
+    vim.api.nvim_create_autocmd("WinClosed", {
+        callback = function(args)
+            local win_id = tonumber(args.match)
+            if win_id == result_win then
+                vim.api.nvim_win_close(prompt_win, false)
+            elseif win_id == prompt_win then
+                vim.api.nvim_win_close(result_win, false)
+            end
+        end
+    })
+end
+
+function CmdPalletteHelpers.AttatchBinds(prompt_buf, result_buf)
+    vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
+    vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
+    vim.api.nvim_buf_set_keymap(prompt_buf, "n", "<Esc>", ":q<CR>", { silent = true })
+    vim.api.nvim_buf_set_keymap(result_buf, "n", "<Esc>", ":q<CR>", { silent = true })
+end
 
 
-local function open_window(win_type)
+function CmdPalletteHelpers.OpenWindow(win_type)
     local buf = vim.api.nvim_create_buf(false, true)
     local lines = vim.opt.lines:get()
     local cols = vim.opt.columns:get()
@@ -77,7 +141,7 @@ local function open_window(win_type)
 end
 
 
-local function format(results, padding)
+function CmdPalletteHelpers.format(results, padding)
     local lines = {}
     local syntax_cols = {}
     local p = padding
@@ -100,7 +164,7 @@ local function format(results, padding)
     return lines, syntax_cols
 end
 
-local function highlight(result_buf, cols)
+function CmdPalletteHelpers.Highlight(result_buf, cols)
     if cols then
         vim.api.nvim_set_hl(0, "Green", { fg = "#24B364" })
         for i, row in ipairs(cols) do
@@ -111,7 +175,7 @@ local function highlight(result_buf, cols)
     end
 end
 
-local function get_paddings(width)
+function CmdPalletteHelpers.GetPaddings(width)
     local keymaps = maps.keymaps
     local modes = {}
     local mods = {}
@@ -137,11 +201,10 @@ local function get_paddings(width)
         mod_max = mod_max + 5
         bind_max = bind_max + 10
     end
-
     return { left_pad=left_pad, mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
 end
 
-local function draw(search_term, result_buf, paddings)
+function CmdPalletteHelpers.Draw(search_term, result_buf, paddings)
     local search_for = ""
     for _, line in ipairs(search_term) do
         if line then
@@ -149,53 +212,19 @@ local function draw(search_term, result_buf, paddings)
         end
     end
 
-    local results = fzf(maps.keymaps, search_for)
+    local results = CmdPallette.fzf(maps.keymaps, search_for)
     local lines, cols = { "" }, {}
     if results then
-        lines, cols = format(results, paddings)
+        lines, cols = CmdPalletteHelpers.format(results, paddings)
     end
     vim.bo[result_buf].modifiable = true
     vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)
     vim.bo[result_buf].modifiable = false
-    highlight(result_buf, cols)
+    CmdPalletteHelpers.Highlight(result_buf, cols)
+    return nil
 end
 
-vim.api.nvim_create_user_command("SearchCommand", function()
-    local result_buf, result_win, result_wid = open_window("result")
-    local prompt_buf, prompt_win, prompt_wid = open_window("prompt")
-    local paddings = get_paddings(result_wid)
 
-    vim.bo[result_buf].buftype = "nofile"
-    vim.bo[result_buf].bufhidden = "wipe"
-    vim.bo[result_buf].modifiable = false
-    vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
-    vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
-    vim.api.nvim_buf_set_keymap(prompt_buf, "n", "<Esc>", ":q<CR>", { silent = true })
-    vim.api.nvim_buf_set_keymap(result_buf, "n", "<Esc>", ":q<CR>", { silent = true })
-    vim.api.nvim_feedkeys("i", "n", false)
-
-    draw({""}, result_buf, paddings)
-    vim.api.nvim_create_autocmd("TextChangedI", {
-        buffer = prompt_buf,
-        callback = function()
-            local search_term = vim.api.nvim_buf_get_lines(prompt_buf, 0, -1, false)
-            draw(search_term, result_buf, paddings)
-        end
-    })
-
-    vim.api.nvim_create_autocmd("WinClosed", {
-        callback = function(args)
-            local win_id = tonumber(args.match)
-            if win_id == result_win then
-                vim.api.nvim_win_close(prompt_win, false)
-            elseif win_id == prompt_win then
-                vim.api.nvim_win_close(result_win, false)
-            end
-        end
-    })
-end, {})
+local _ = CmdPallette:new()
 
 
-vim.keymap.set("n", "<leader>oc", function()
-    vim.cmd(":SearchCommand")
-end)
