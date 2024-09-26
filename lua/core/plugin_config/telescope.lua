@@ -1,6 +1,6 @@
 local telescope = require('telescope')
 local appendix
-if PLATFORM == "Windows_NT" then
+if UserSettings.Os.Platform == "Windows_NT" then
     appendix = "\\"
 else
     appendix = "/"
