@@ -24,6 +24,30 @@ function WriteTheme(index)
         file:write(index)
     end
 end
+local TIMER_ID = nil
+
+function PrintOutput(output, time)
+    local lines = vim.split(output, "\n")
+    for _, line in ipairs(lines) do
+        print(line)
+    end
+    AddOrReplaceTimer(time, ClearTerm)
+end
+
+function ClearTerm()
+    vim.cmd [[:echo ""]]
+    TIMER_ID = nil
+end
+
+function AddOrReplaceTimer(time, func)
+    if TIMER_ID then
+        TIMER_ID:stop()
+    end
+    TIMER_ID = vim.defer_fn(function()
+        func()
+    end, time)
+end
+
 
 function PrintOutput(output, time)
     if TIMER_ID then
@@ -51,7 +75,6 @@ function AddOrReplaceTimer(time, func)
         func()
     end, time)
 end
-
 function LoadTheme(params)
     local index = params.index or ""
     local name = params.name or ""

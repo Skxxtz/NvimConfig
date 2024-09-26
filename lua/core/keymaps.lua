@@ -48,7 +48,6 @@ end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function()
     local output = vim.fn.system("git push");
-
     PrintOutput(output, 750)
 end, { silent = true })
 
