@@ -26,26 +26,30 @@ function WriteTheme(index)
 end
 local TIMER_ID = nil
 
+local TIMER_ID = nil
+
 function PrintOutput(output, time)
     local lines = vim.split(output, "\n")
+
+    -- Print the new output immediately
     for _, line in ipairs(lines) do
         print(line)
     end
-    AddOrReplaceTimer(time, ClearTerm)
+    
+    -- Only clear the terminal after the timer expires
+    if TIMER_ID then
+        TIMER_ID:stop()
+    end
+
+    -- Create a new timer to clear the terminal
+    TIMER_ID = vim.defer_fn(function()
+        ClearTerm()
+    end, time)
 end
 
 function ClearTerm()
     vim.cmd [[:echo ""]]
     TIMER_ID = nil
-end
-
-function AddOrReplaceTimer(time, func)
-    if TIMER_ID then
-        TIMER_ID:stop()
-    end
-    TIMER_ID = vim.defer_fn(function()
-        func()
-    end, time)
 end
 
 
