@@ -85,3 +85,6 @@ end, { silent = true })
 
 -- Unbind Q
 vim.keymap.set("n", "Q", "<nop>")
+
+
+vim.keymap.set("n", "<Esc>", ":echo ''<CR>")
