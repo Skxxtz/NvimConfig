@@ -25,7 +25,7 @@ function WriteTheme(index)
     end
 end
 
-function PrintOutput(output, time)
+function PrintOutput(output)
     local lines = vim.split(output, "\n")
     for _, line in ipairs(lines) do
         print(line)

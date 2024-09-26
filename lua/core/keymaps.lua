@@ -43,19 +43,19 @@ vim.keymap.set("n", "<leader>gc", function()
     vim.fn.system("git add .")
     local commit = vim.fn.input("commit message: ")
     local output = vim.fn.system(string.format('git commit -m "%s"', commit))
-    PrintOutput(output, 750)
+    PrintOutput(output)
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>gp", function()
     local output = vim.fn.system("git push");
-    PrintOutput(output, 750)
+    PrintOutput(output)
 end, { silent = true })
 
 vim.keymap.set("n", "<leader>get", function()
     vim.fn.system("git stash");
     local output = vim.fn.system("git pull --rebase");
     vim.fn.system("git stash pop");
-    PrintOutput(output, 750)
+    PrintOutput(output)
 end, { silent = true })
 
 
