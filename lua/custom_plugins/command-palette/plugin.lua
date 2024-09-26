@@ -75,9 +75,9 @@ function CmdPallette:Show()
     vim.bo[result_buf].modifiable = true
     vim.api.nvim_feedkeys("i", "n", false)
 
-    helpers.Draw({""}, result_buf, paddings)
+    helpers.Draw({""}, result_buf, paddings, result_wid)
     helpers.AttatchBinds(prompt_buf, result_buf)
-    helpers.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, paddings)
+    helpers.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, paddings, result_wid)
 end
 
 

@@ -1,14 +1,14 @@
 local maps = require("custom_plugins.command-palette.maps")
 local M = {}
 
-function M.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, paddings)
+function M.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, paddings, result_wid)
     vim.api.nvim_create_augroup("CmdPalletteGroup", { clear = true })
     vim.api.nvim_create_autocmd("TextChangedI", {
         buffer = prompt_buf,
         group = "CmdPalletteGroup",
         callback = function()
             local search_term = vim.api.nvim_buf_get_lines(prompt_buf, 0, -1, false)
-            M.Draw(search_term, result_buf, paddings)
+            M.Draw(search_term, result_buf, paddings, result_wid)
         end
     })
     vim.api.nvim_create_autocmd("WinResized", {
@@ -55,7 +55,7 @@ function M.OpenWindow(win_type)
         border = "rounded",
         title = win_type,
         title_pos = "center",
-        focusable = win_type == "Command",
+        --focusable = win_type == "Command",
     })
     vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:Normal")
     return buf, win, width
@@ -88,23 +88,35 @@ function M.ApplyDims(win, win_type)
     })
 end
 
-function M.format(results, padding)
+function M.format(results, padding, width)
     local lines = {}
     local syntax_cols = {}
     local p = padding
     local x_offset = p.left_pad + p.mode_max + p.bind_max
+    local total_width = p.left_pad + p.mode_max + p.bind_max + p.expl_max + p.right_pad
     if #results > 0 then
         for _, row in ipairs(results) do
-            local left_padding = string.rep(" ", p.left_pad)
-            local mode = row.mode .. string.rep(" ", p.mode_max - #row.mode)
-            local bind = row.bind .. string.rep(" ", p.bind_max - vim.fn.strwidth(row.bind))
-            local expl = row.explanation .. string.rep(" ", p.expl_max - #row.explanation)
             local new_indices = {}
-            for _, index in ipairs(row.indices) do
-                table.insert(new_indices, index + x_offset)
+            if total_width > width then
+                local line1 = row.explanation
+                local line2 = string.format("%-10s%-20s", row.mode, row.bind)
+                table.insert(lines, line1)
+                table.insert(lines, line2)
+                table.insert(lines, "")
+                table.insert(syntax_cols, row.indices)
+                table.insert(syntax_cols, {})
+                table.insert(syntax_cols, {})
+            else
+                local left_padding = string.rep(" ", p.left_pad)
+                local mode = row.mode .. string.rep(" ", p.mode_max - vim.fn.strwidth(row.mode))
+                local bind = row.bind .. string.rep(" ", p.bind_max - vim.fn.strwidth(row.bind))
+                local expl = row.explanation .. string.rep(" ", p.expl_max - vim.fn.strwidth(row.explanation))
+                for _, index in ipairs(row.indices) do
+                    table.insert(new_indices, index + x_offset)
+                end
+                table.insert(lines, left_padding .. mode .. bind .. expl)
+                table.insert(syntax_cols, new_indices)
             end
-            table.insert(syntax_cols, new_indices)
-            table.insert(lines, left_padding .. mode .. bind .. expl)
         end
     end
     return lines, syntax_cols
@@ -112,7 +124,7 @@ end
 
 function M.Highlight(result_buf, cols)
     if cols then
-        vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.CommandPallettePlugin.AccentColor })
+        vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.CommandPallettePlugin.AccentColor})
         for i, row in ipairs(cols) do
             for _, col in ipairs(row) do
                 vim.api.nvim_buf_add_highlight(result_buf, 0, "Green", i - 1, col - 1, col)
@@ -143,13 +155,15 @@ function M.GetPaddings(width)
         bind_max = bind_max + 10
     else
         local diff = width - total_width
-        mode_max = mode_max + math.floor(diff * 0.25)
-        bind_max = bind_max + math.floor(diff *0.5)
+        if diff > 0 then
+            mode_max = mode_max + math.floor(diff * 0.25)
+            bind_max = bind_max + math.floor(diff *0.5)
+        end
     end
     return { left_pad=left_pad, mode_max = mode_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
 end
 
-function M.Draw(search_term, result_buf, paddings)
+function M.Draw(search_term, result_buf, paddings, width)
     local search_for = ""
     for _, line in ipairs(search_term) do
         if line then
@@ -160,7 +174,7 @@ function M.Draw(search_term, result_buf, paddings)
     local results = CmdPallette.fzf(maps.keymaps, search_for)
     local lines, cols = { "" }, {}
     if results then
-        lines, cols = M.format(results, paddings)
+        lines, cols = M.format(results, paddings, width)
     end
     vim.bo[result_buf].modifiable = true
     vim.api.nvim_buf_set_lines(result_buf, 0, -1, false, lines)

@@ -7,6 +7,6 @@ syntax match myBrackets /\[[^]]*\]/  " Matches square brackets
 syntax match myMods /<[^>]*>/  " Matches angle brackets
 
 " Define highlighting styles
-highlight myBrackets ctermfg=lightgreen guifg=lightgreen
-highlight myMods ctermfg=lightblue guifg=#8EDFFF
+" highlight myBrackets ctermfg=lightgreen guifg=lightgreen
+" highlight myMods ctermfg=lightblue guifg=#8EDFFF
 
