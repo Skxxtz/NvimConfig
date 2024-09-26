@@ -64,7 +64,6 @@ function CmdPallette.fzf(list, query)
 end
 
 function CmdPallette:Show()
-    local editor_win = vim.api.nvim_get_current_win()
     local result_buf, result_win, result_wid = helpers.OpenWindow("Results")
     local prompt_buf, prompt_win, _ = helpers.OpenWindow("Command")
     local paddings = helpers.GetPaddings(result_wid)
