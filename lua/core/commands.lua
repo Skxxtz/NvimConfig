@@ -83,7 +83,7 @@ function RunCompiledProgram()
         vim.cmd(":silent ! cargo run")
     elseif extension == "cpp" then
         local command
-        if PLATFORM == "Windows_NT" then
+        if UserSettings.Os.Platform == "Windows_NT" then
             command = string.format("! %s.exe", file)
         else
             command = string.format("! ./%s", file)
@@ -91,7 +91,7 @@ function RunCompiledProgram()
         vim.cmd(command)
     elseif extension == "py" then
         vim.cmd(string.format("! python %s.py", file))
-    elseif extension == "sh" and PLATFORM ~= "Windows_NT" then
+    elseif extension == "sh" and UserSettings.Os.Platform ~= "Windows_NT" then
         vim.cmd(string.format("! %s.%s", file, extension))
     end
 end
