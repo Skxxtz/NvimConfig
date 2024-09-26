@@ -53,7 +53,7 @@ end, { silent = true })
 
 vim.keymap.set("n", "<leader>get", function()
     vim.fn.system("git stash");
-    local output = vim.fn.system("git pull");
+    local output = vim.fn.system("git pull --rebase");
     vim.fn.system("git stash pop");
     PrintOutput(output, 750)
 end, { silent = true })
