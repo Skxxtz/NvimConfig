@@ -27,9 +27,7 @@ end
 
 function PrintOutput(output, time)
     local lines = vim.split(output, "\n")
-    for _, line in ipairs(lines) do
-        print(line)
-    end
+    print(lines)
     AddOrReplaceTimer(time, ClearTerm)
 end
 
