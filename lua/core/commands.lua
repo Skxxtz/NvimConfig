@@ -26,7 +26,14 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
-    print(output)
+    if TIMER_ID then
+        TIMER_ID:stop()
+        ClearTerm()
+    end
+    local lines = vim.split(output, "\n")
+    for _, line in ipairs(lines) do
+        print(line)
+    end
     AddOrReplaceTimer(time, ClearTerm)
 end
 
