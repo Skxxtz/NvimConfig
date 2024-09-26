@@ -92,12 +92,11 @@ function M.format(results, padding)
     local lines = {}
     local syntax_cols = {}
     local p = padding
-    local x_offset = p.left_pad + p.mode_max + p.mod_max + p.bind_max
+    local x_offset = p.left_pad + p.mode_max + p.bind_max
     if #results > 0 then
         for _, row in ipairs(results) do
             local left_padding = string.rep(" ", p.left_pad)
             local mode = row.mode .. string.rep(" ", p.mode_max - #row.mode)
-            local mod = row.mod .. string.rep(" ", p.mod_max - #row.mod)
             local bind = row.bind .. string.rep(" ", p.bind_max - vim.fn.strwidth(row.bind))
             local expl = row.explanation .. string.rep(" ", p.expl_max - #row.explanation)
             local new_indices = {}
@@ -105,7 +104,7 @@ function M.format(results, padding)
                 table.insert(new_indices, index + x_offset)
             end
             table.insert(syntax_cols, new_indices)
-            table.insert(lines, left_padding .. mode .. mod .. bind .. expl)
+            table.insert(lines, left_padding .. mode .. bind .. expl)
         end
     end
     return lines, syntax_cols
@@ -125,34 +124,29 @@ end
 function M.GetPaddings(width)
     local keymaps = maps.keymaps
     local modes = {}
-    local mods = {}
     local binds = {}
     local explanations = {}
     for _, row in ipairs(keymaps) do
         table.insert(modes, vim.fn.strwidth(row.mode))
-        table.insert(mods, vim.fn.strwidth(row.mod))
         table.insert(binds, vim.fn.strwidth(row.bind))
         table.insert(explanations, vim.fn.strwidth(row.explanation))
     end
     local left_pad = 2
     local mode_max = math.max(unpack(modes))
-    local mod_max = math.max(unpack(mods))
     local bind_max = math.max(unpack(binds))
     local expl_max = math.max(unpack(explanations))
     local right_pad = 2
 
-    local total_width = left_pad + mode_max + mod_max + bind_max + expl_max + right_pad
+    local total_width = left_pad + mode_max + bind_max + expl_max + right_pad
     if total_width + 20 < width then
         mode_max = mode_max + 5
-        mod_max = mod_max + 5
         bind_max = bind_max + 10
     else
         local diff = width - total_width
         mode_max = mode_max + math.floor(diff * 0.25)
-        mod_max = mod_max + math.floor(diff * 0.25)
         bind_max = bind_max + math.floor(diff *0.5)
     end
-    return { left_pad=left_pad, mode_max = mode_max, mod_max = mod_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
+    return { left_pad=left_pad, mode_max = mode_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
 end
 
 function M.Draw(search_term, result_buf, paddings)
