@@ -47,7 +47,6 @@ function AddOrReplaceTimer(time, func)
     end, time)
 end
 
-
 function LoadTheme(params)
     local index = params.index or ""
     local name = params.name or ""
