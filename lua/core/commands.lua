@@ -26,8 +26,7 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
-    local lines = vim.split(output, "\n")
-    print(lines)
+    print(output)
     AddOrReplaceTimer(time, ClearTerm)
 end
 
