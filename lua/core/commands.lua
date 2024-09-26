@@ -30,7 +30,6 @@ function PrintOutput(output, time)
     for _, line in ipairs(lines) do
         print(line)
     end
-    AddOrReplaceTimer(time, ClearTerm)
 end
 
 function ClearTerm()
