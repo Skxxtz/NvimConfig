@@ -26,7 +26,9 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
+    print("PrintOutput called")  -- Debug output
     if TIMER_ID then
+        print("Stopping existing timer")
         TIMER_ID:stop()
         TIMER_ID = nil
     end
@@ -34,6 +36,7 @@ function PrintOutput(output, time)
     for _, line in ipairs(lines) do
         print(line)
     end
+    print("Setting new timer for ClearTerm")
     TIMER_ID = vim.defer_fn(ClearTerm, time)
 end
 
