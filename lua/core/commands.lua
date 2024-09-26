@@ -26,11 +26,11 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
+    AddOrReplaceTimer(time, ClearTerm)
     local lines = vim.split(output, "\n")
     for _, line in ipairs(lines) do
         print(line)
     end
-    AddOrReplaceTimer(time, ClearTerm)
 end
 
 function ClearTerm()
