@@ -130,9 +130,9 @@ M.keymaps = {
     { mode = "n",   mod = "",         bind = "J",                     explanation = "Join line below to this one" },
     { mode = "n",   mod = "",         bind = "K",                     explanation = "Split line to new line here" },
 
-    { mode = "n",   mod = "<leader>", bind = "gc",                    explanation = "Git add . and commit -m" },
-    { mode = "n",   mod = "<leader>", bind = "gp",                    explanation = "Git push" },
-    { mode = "n",   mod = "<leader>", bind = "get",                   explanation = "Git stash local changes and pull" },
+    { mode = "n",   mod = "<leader>", bind = "gc",                    explanation = "[Git] Git add . and commit -m" },
+    { mode = "n",   mod = "<leader>", bind = "gp",                    explanation = "[Git] Git push" },
+    { mode = "n",   mod = "<leader>", bind = "get",                   explanation = "[Git] Git stash local changes and pull" },
 
     { mode = "cmd", mod = "",         bind = ":w",                    explanation = "[Command] Write file" },
     { mode = "cmd", mod = "",         bind = ":wq",                   explanation = "[Command] Write file and quit" },

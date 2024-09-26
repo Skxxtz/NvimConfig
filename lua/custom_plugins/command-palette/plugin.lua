@@ -67,8 +67,9 @@ function CmdPallette.fzf(list, query)
 end
 
 function CmdPallette:Show()
-    local result_buf, result_win, result_wid = CmdPalletteHelpers.OpenWindow("result")
-    local prompt_buf, prompt_win, _ = CmdPalletteHelpers.OpenWindow("prompt")
+    local editor_win = vim.api.nvim_get_current_win()
+    local result_buf, result_win, result_wid = CmdPalletteHelpers.OpenWindow("Results")
+    local prompt_buf, prompt_win, _ = CmdPalletteHelpers.OpenWindow("Command")
     local paddings = CmdPalletteHelpers.GetPaddings(result_wid)
 
     vim.bo[result_buf].buftype = "nofile"
@@ -89,6 +90,12 @@ function CmdPalletteHelpers.AttatchEvents(prompt_buf, prompt_win, result_buf, re
         callback = function()
             local search_term = vim.api.nvim_buf_get_lines(prompt_buf, 0, -1, false)
             CmdPalletteHelpers.Draw(search_term, result_buf, paddings)
+        end
+    })
+    vim.api.nvim_create_autocmd("WinResized", {
+        callback = function ()
+            CmdPalletteHelpers.ApplyDims(result_win, "Results")
+            CmdPalletteHelpers.ApplyDims(prompt_win, "Command")
         end
     })
 
@@ -117,18 +124,7 @@ end
 
 function CmdPalletteHelpers.OpenWindow(win_type)
     local buf = vim.api.nvim_create_buf(false, true)
-    local lines = vim.opt.lines:get()
-    local cols = vim.opt.columns:get()
-    local width = math.ceil(cols * 0.8)
-    local left = math.ceil((cols - width) * 0.5)
-    local height, top
-    if win_type == "result" then
-        height = math.ceil(lines * 0.7 - 4)
-        top = 4
-    else
-        height = 1
-        top = math.ceil((lines * 0.75))
-    end
+    local width, height, left, top = CmdPalletteHelpers.GetDims(win_type)
 
     local win = vim.api.nvim_open_win(buf, true, {
         relative = "editor",
@@ -138,13 +134,39 @@ function CmdPalletteHelpers.OpenWindow(win_type)
         col = left,
         row = top,
         border = "rounded",
-        title = "Results",
+        title = win_type,
         title_pos = "center",
     })
     vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:Normal")
     return buf, win, width
 end
 
+function CmdPalletteHelpers.GetDims(win_type)
+    local lines = vim.opt.lines:get()
+    local cols = vim.opt.columns:get()
+    local width = math.ceil(cols * 0.8)
+    local left = math.ceil((cols - width) * 0.5)
+    local height, top
+    if win_type == "Results" then
+        height = math.ceil(lines * 0.7 - 4)
+        top = 4
+    else
+        height = 1
+        top = math.ceil((lines * 0.75))
+    end
+    return width, height, left, top
+end
+
+function CmdPalletteHelpers.ApplyDims(win, win_type)
+    local width, height, left, top = CmdPalletteHelpers.GetDims(win_type)
+    vim.api.nvim_win_set_config(win, {
+        relative = "editor",
+        width = width,
+        height = height,
+        col = left,
+        row = top,
+    })
+end
 
 function CmdPalletteHelpers.format(results, padding)
     local lines = {}
