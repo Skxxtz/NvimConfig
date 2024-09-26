@@ -26,10 +26,15 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
+    if TIMER_ID then
+        TIMER_ID:stop()
+        TIMER_ID = nil
+    end
     local lines = vim.split(output, "\n")
     for _, line in ipairs(lines) do
         print(line)
     end
+    TIMER_ID = vim.defer_fn(ClearTerm, time)
 end
 
 function ClearTerm()
