@@ -26,11 +26,11 @@ function WriteTheme(index)
 end
 
 function PrintOutput(output, time)
-    AddOrReplaceTimer(time, ClearTerm)
     local lines = vim.split(output, "\n")
     for _, line in ipairs(lines) do
         print(line)
     end
+    AddOrReplaceTimer(time, ClearTerm)
 end
 
 function ClearTerm()
@@ -48,32 +48,6 @@ function AddOrReplaceTimer(time, func)
 end
 
 
-function PrintOutput(output, time)
-    if TIMER_ID then
-        TIMER_ID:stop()
-        ClearTerm()
-    end
-    local lines = vim.split(output, "\n")
-    for _, line in ipairs(lines) do
-        print(line)
-    end
-    AddOrReplaceTimer(time, ClearTerm)
-end
-
-function ClearTerm()
-    vim.cmd [[:echo ""]]
-    TIMER_ID = nil
-end
-
-function AddOrReplaceTimer(time, func)
-    if TIMER_ID then
-        TIMER_ID:stop()
-        TIMER_ID = nil
-    end
-    TIMER_ID = vim.defer_fn(function()
-        func()
-    end, time)
-end
 function LoadTheme(params)
     local index = params.index or ""
     local name = params.name or ""
