@@ -55,6 +55,7 @@ function M.OpenWindow(win_type)
         border = "rounded",
         title = win_type,
         title_pos = "center",
+        focusable = win_type == "Command",
     })
     vim.api.nvim_win_set_option(win, "winhighlight", "NormalFloat:Normal")
     return buf, win, width

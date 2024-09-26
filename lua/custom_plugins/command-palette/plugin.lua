@@ -83,5 +83,3 @@ end
 
 
 local _ = CmdPallette:new()
-
-
