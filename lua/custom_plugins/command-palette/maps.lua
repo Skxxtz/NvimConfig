@@ -95,6 +95,12 @@ M.keymaps = {
     { mode = "n",   mod = "",         bind = "zz",                    explanation = "Shift editor to center" },
     { mode = "n",   mod = "",         bind = "{",                     explanation = "[Movement] Go to start of block" },
     { mode = "n",   mod = "",         bind = "}",                     explanation = "[Movement] Go to end of block" },
+    { mode = "n",   mod = "<ctrl>",   bind = "f",                     explanation = "[Movement] Scroll down one page" },
+    { mode = "n",   mod = "<ctrl>",   bind = "b",                     explanation = "[Movement] Scroll up one page" },
+    { mode = "n",   mod = "<ctrl>",   bind = "d",                     explanation = "[Movement] Scroll down one half page" },
+    { mode = "n",   mod = "<ctrl>",   bind = "u",                     explanation = "[Movement] Scroll up one half page" },
+    { mode = "n",   mod = "",         bind = "m[char]",               explanation = "[Movement] Mark current line into registry [char]" },
+    { mode = "n",   mod = "",         bind = "'[char]",               explanation = "[Movement] Jump to marker in registry [char]" },
 
     { mode = "n",   mod = "",         bind = "w",                     explanation = "[Movement] Go to next word" },
     { mode = "n",   mod = "",         bind = "W",                     explanation = "[Movement] Go to next word after continuous string" },
@@ -140,6 +146,9 @@ M.keymaps = {
 
     { mode = "cmd", mod = "",         bind = ":/[String]",            explanation = "[Command] Search for string in file" },
     { mode = "cmd", mod = "",         bind = ":%s/[String]/[String]", explanation = "[Command] Replace string with other string" },
+
+    { mode = "cmd", mod = "",         bind = ":delmarks [char]",      explanation = "[Command] Delete marker in registry [char]" },
+    { mode = "cmd", mod = "",         bind = ":delmarks!",            explanation = "[Command] Delete all markers in currenf buffer" },
 }
 
 return M
