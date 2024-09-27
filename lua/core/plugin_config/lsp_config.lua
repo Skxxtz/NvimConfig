@@ -59,5 +59,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<space>f', function()
             vim.lsp.buf.format { async = true }
         end, opts)
+        vim.keymap.set("i", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
     end,
 })

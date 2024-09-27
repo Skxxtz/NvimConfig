@@ -1,7 +1,7 @@
 -- SETTINGS
 M = {
     StartUpPlugin = {
-        Header = "Sign",
+        Header = "Tree",
         Signiture = "Squirly",
     },
     Cpp = {

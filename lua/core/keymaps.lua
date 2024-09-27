@@ -2,65 +2,51 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
--- Move lines up or down
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", {desc = "Move line(s) down one line."})
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", {desc = "Move line(s) up one line."})
 
--- Join line below with this one but having cursor stay in place
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "K", "i<CR><Esc>k$")
+vim.keymap.set("n", "J", "mzJ`z", {desc = "Join the line below to this with the cursor staying in the same position."})
 
+vim.keymap.set("n", "n", "nzzzv", {desc = "Next search result, but keep the cursor in the middle."})
+vim.keymap.set("n", "N", "Nzzzv", {desc = "Previous search result, but keep the cursor in the middle."})
 
--- Keep search terms in the middle
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n", "G", "Gzz", {desc = "Jump to the bottom with the cursor in the middle."})
 
+vim.keymap.set("x", "<leader>p", "\"_dP", {desc="Put text [from register x] before the cursor without adding a replaced string [into register x].."})
 
--- Jump to top/bottom with cursor in middle
-vim.keymap.set("n", "G", "Gzz")
+vim.keymap.set("n", "<leader>y", "\"+y", {desc="Yank into system clipboard."})
+vim.keymap.set("v", "<leader>y", "\"+y", {desc="Yank into system clipboard."})
+vim.keymap.set("n", "<leader>y", "\"+Y", {desc="Yank into system clipboard."})
 
--- Paste without losing pasted word
-vim.keymap.set("x", "<leader>p", "\"_dP")
-
-
--- Sets <leader>y to yank into system clipboard, else into internal buffer
-vim.keymap.set("n", "<leader>y", "\"+y")
-vim.keymap.set("v", "<leader>y", "\"+y")
-vim.keymap.set("n", "<leader>y", "\"+Y")
-
--- quick fix navigation
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", {desc="Quick fix navigation"})
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", {desc="Quick fix navigation"})
+vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz", {desc="Quick fix navigation"})
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz", {desc="Quick fix navigation"})
 
 
--- replace all occurrences of word under cursor
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], {desc="Replace all occurrences of word under cursor."})
 
--- Git keybind
 vim.keymap.set("n", "<leader>gc", function()
     vim.fn.system("git add .")
     local commit = vim.fn.input("commit message: ")
     local output = vim.fn.system(string.format('git commit -m "%s"', commit))
     PrintOutput(output)
-end, { silent = true })
+end, { silent = true, desc="Git add all and commit with message."})
 
 vim.keymap.set("n", "<leader>gp", function()
     local output = vim.fn.system("git push");
     PrintOutput(output)
-end, { silent = true })
+end, { silent = true, desc="Git push" })
 
 vim.keymap.set("n", "<leader>get", function()
     vim.fn.system("git stash");
     local output = vim.fn.system("git pull --rebase");
     vim.fn.system("git stash pop");
     PrintOutput(output)
-end, { silent = true })
+end, { silent = true, desc="Git stash current edits and pull from remote." })
 
 
--- Compiler Commands
-vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", { silent = true })
+vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", { silent = true, desc="Runs py, rs, c++, sh programs (if compiled)." })
 
 vim.keymap.set("n", "<leader>ü", function()
     local current_file = vim.fn.expand("%:p")
@@ -80,11 +66,10 @@ vim.keymap.set("n", "<leader>ü", function()
     elseif extension == "sh" and UserSettings.Os.Platform ~= "Windows_NT" then
         vim.cmd(string.format("!chmod +x %s", current_file))
     end
-end, { silent = true })
+end, { silent = true, desc="Compiles or makes executable all rs, c++, sh files." })
 
 
--- Unbind Q
-vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "Q", "<nop>", {desc="Unbinds Q."})
 
 
-vim.keymap.set("n", "<Esc>", ":echo ''<CR>")
+vim.keymap.set("n", "<Esc>", ":echo ''<CR>", {desc="Clear command line."})
