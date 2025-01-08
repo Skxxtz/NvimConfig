@@ -32,7 +32,7 @@ lspconfig.html.setup({})
 lspconfig.tailwindcss.setup({})
 lspconfig.rust_analyzer.setup({})
 lspconfig.clangd.setup({})
-
+lspconfig.pyright.setup({})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),

@@ -29,6 +29,7 @@ vim.cmd [[ set termguicolors ]]
 
 -- disables the auto line break for .html and .js files
 vim.cmd [[ autocmd BufRead,BufNewFile *.html,*.js set nowrap ]]
+vim.cmd [[ autocmd BufRead,BufNewFile *.md, set wrap ]]
 vim.cmd [[ autocmd BufRead,BufNewFile *.html setlocal filetype=html ]]
 
 --Line numbers

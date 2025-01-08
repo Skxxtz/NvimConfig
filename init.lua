@@ -11,7 +11,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-
 -- ENVS
 require("data.settings")
 require("core.commands")

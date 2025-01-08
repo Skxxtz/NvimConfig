@@ -53,7 +53,7 @@ vim.keymap.set("n", "<leader>ü", function()
     local cfile = vim.fn.expand("%:t:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
-        vim.cmd(":silent ! cargo build\n")
+        vim.cmd("! cargo build\n")
     elseif extension == "cpp" then
         local executeable_ext = ""
         local command

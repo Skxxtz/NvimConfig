@@ -80,7 +80,7 @@ function RunCompiledProgram()
     local file = vim.fn.expand("%:p:r")
     local extension = vim.fn.expand("%:t:e")
     if extension == "rs" then
-        vim.cmd(":silent ! cargo run")
+        vim.cmd("! cargo run")
     elseif extension == "cpp" then
         local command
         if UserSettings.Os.Platform == "Windows_NT" then
