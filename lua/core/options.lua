@@ -28,7 +28,7 @@ vim.cmd [[ set noswapfile ]]
 vim.cmd [[ set termguicolors ]]
 
 -- disables the auto line break for .html and .js files
-vim.cmd [[ autocmd BufRead,BufNewFile *.html,*.js set nowrap ]]
+vim.cmd [[ autocmd BufRead,BufNewFile *.html,*.js, *.rs set nowrap ]]
 vim.cmd [[ autocmd BufRead,BufNewFile *.md, set wrap ]]
 vim.cmd [[ autocmd BufRead,BufNewFile *.html setlocal filetype=html ]]
 
@@ -68,10 +68,12 @@ vim.cmd([[
 augroup CustomSyntax
 autocmd!
 autocmd FileType * syntax match singleArrow '->' conceal cchar=→
-autocmd FileType * syntax match doubleArrow '=>' conceal cchar=⟹
+autocmd FileType * syntax match doubleArrow '=>' conceal cchar=→
 autocmd FileType * highlight default link singleArrow Normal
 autocmd FileType * highlight default link doubleArrow Normal
 augroup END
 ]])
 
 vim.cmd('autocmd FileType html,vue,django,javascript setlocal filetype=html')
+
+vim.g.neovide_font = "Noto Color Emoji"

@@ -73,3 +73,4 @@ vim.keymap.set("n", "Q", "<nop>", {desc="Unbinds Q."})
 
 
 vim.keymap.set("n", "<Esc>", ":echo ''<CR>", {desc="Clear command line."})
+vim.keymap.set("n", "<C-#>", ":nohl<CR>:echo ''<CR>", {desc="Clear highlights. And commandline after."})
