@@ -1,4 +1,3 @@
-require("core.plugin_config.mason")
 require("core.plugin_config.autopairs")
 require("core.plugin_config.colorscheme")
 require("core.plugin_config.completions")

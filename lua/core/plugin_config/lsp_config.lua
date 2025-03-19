@@ -1,5 +1,6 @@
+require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "cssls", "html", "tailwindcss", "pyright", "eslint" }
+    ensure_installed = {"emmet_language_server", "rust_analyzer", "clangd", "cssls", "html", "tailwindcss", "pyright", "ts_ls"}
 })
 
 local lspconfig = require('lspconfig')
@@ -26,13 +27,14 @@ lspconfig.lua_ls.setup {
         },
     }
 }
-lspconfig.eslint.setup({})
 lspconfig.cssls.setup({})
 lspconfig.html.setup({})
 lspconfig.tailwindcss.setup({})
 lspconfig.rust_analyzer.setup({})
 lspconfig.clangd.setup({})
 lspconfig.pyright.setup({})
+lspconfig.djlsp.setup({})
+lspconfig.ts_ls.setup({})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -48,6 +50,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
         vim.keymap.set('n', '<space>wl', function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+        end, opts)
+        vim.keymap.set('n', '<C-.>', function()
+            vim.diagnostic.setqflist()
         end, opts)
         vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
         vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
