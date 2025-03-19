@@ -41,14 +41,6 @@ REVERSE_THEME["nightfox"] = #THEMES
 table.insert(THEMES, "carbonfox")
 REVERSE_THEME["carbonfox"] = #THEMES
 
-
-
-
--- WHITEOUT THEME:
-table.insert(THEMES, "whiteout")
-REVERSE_THEME["whiteout"] = #THEMES
-
-
 -- ZELLNER THEME:
 table.insert(THEMES, "zellner")
 REVERSE_THEME["zellner"] = #THEMES

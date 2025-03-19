@@ -1,7 +1,7 @@
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'horizon',
+    theme = 'catppuccin-frappe',
     -- nightfly
   },
   sections = {
@@ -14,7 +14,7 @@ require('lualine').setup {
     lualine_b = {'branch', 'diff', 'diagnostics'},
     lualine_c = {},
     lualine_x = {'filetype'},
-    lualine_y = {'progress'},
+    lualine_y = {}, --had progress
     lualine_z = {'location'}
   }
 }

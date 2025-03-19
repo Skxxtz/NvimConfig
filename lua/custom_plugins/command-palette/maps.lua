@@ -1,4 +1,5 @@
 local M = {}
+-- CTRL-W is window management
 M.keymaps = {
     { mode = "n",   bind = '["x]<Del>',                                               explanation = "Delete character under the cursor [into register x] (not |linewise|)." },
     { mode = "v",   bind = '["x]<Del>',                                               explanation = "Delete the highlighted text [into register x]." },
