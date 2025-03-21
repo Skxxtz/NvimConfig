@@ -35,6 +35,10 @@ function M.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, padding
     })
 end
 
+function M.escape_pattern(str)
+    return str:gsub("([%%[%]%(%)%.%+%-%*%?%^%$])", "%%%1")
+end
+
 function M.AttatchBinds(prompt_buf, result_buf)
     vim.api.nvim_buf_set_keymap(prompt_buf, "n", "q", ":q<CR>", { silent = true })
     vim.api.nvim_buf_set_keymap(result_buf, "n", "q", ":q<CR>", { silent = true })
@@ -93,30 +97,35 @@ function M.format(results, padding, width)
     local lines = {}
     local syntax_cols = {}
     local p = padding
-    local x_offset = p.left_pad + p.mode_max + p.bind_max
+    local x_offset = p.mode_max + p.bind_max
     local total_width = p.left_pad + p.mode_max + p.bind_max + p.expl_max + p.right_pad
+    local current_height = 1
     if #results > 0 then
         for _, row in ipairs(results) do
-            local new_indices = {}
-            if total_width > width then
-                local format_str = string.format("%%-10s%%-%ds", p.bind_max)
-                local line2 = string.format(format_str, row.mode, row.bind)
-                table.insert(lines, line2 .. row.explanation)
-                table.insert(lines, "")
-                table.insert(syntax_cols, row.indices)
-                table.insert(syntax_cols, {})
-                table.insert(syntax_cols, {})
-            else
-                local left_padding = string.rep(" ", p.left_pad)
-                local mode = row.mode .. string.rep(" ", p.mode_max - vim.fn.strwidth(row.mode))
-                local bind = row.bind .. string.rep(" ", p.bind_max - vim.fn.strwidth(row.bind))
-                local expl = row.explanation .. string.rep(" ", p.expl_max - vim.fn.strwidth(row.explanation))
-                for _, index in ipairs(row.indices) do
-                    table.insert(new_indices, index + x_offset)
-                end
-                table.insert(lines, left_padding .. mode .. bind .. expl)
-                table.insert(syntax_cols, new_indices)
+            local expl_lines = {}
+            local expl_cols = width - (p.mode_max + p.bind_max)
+            for i = 1, #row.explanation, expl_cols do
+                table.insert(expl_lines, row.explanation:sub(i, i + expl_cols - 1))
             end
+            local format_str = string.format("%%-%ds%%-%ds", p.mode_max, p.bind_max)
+            local first_line = string.format(format_str, row.mode, row.bind)
+            table.insert(lines, first_line .. expl_lines[1])
+            for i = 2, #expl_lines do
+                local tmp = string.rep(" ", p.mode_max + p.bind_max) .. expl_lines[i]
+                table.insert(lines, tmp)
+            end
+            table.insert(lines, "")
+            table.insert(syntax_cols, {})
+            table.insert(syntax_cols, {})
+            for _, index in ipairs(row.indices) do
+                local tmp = math.floor(index / expl_cols)
+                if not syntax_cols[current_height + tmp] then
+                    syntax_cols[current_height + tmp] = {}
+                end
+                table.insert(syntax_cols[current_height + tmp], (index - tmp * expl_cols) + x_offset)
+            end
+
+            current_height = current_height + #expl_lines + 1
         end
     end
     return lines, syntax_cols
@@ -125,7 +134,7 @@ end
 function M.Highlight(result_buf, cols)
     if cols then
         vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.CommandPallettePlugin.AccentColor})
-        for i, row in ipairs(cols) do
+        for i, row in pairs(cols) do
             for _, col in ipairs(row) do
                 vim.api.nvim_buf_add_highlight(result_buf, 0, "Green", i - 1, col - 1, col)
             end
@@ -144,22 +153,12 @@ function M.GetPaddings(width)
         table.insert(explanations, vim.fn.strwidth(row.explanation))
     end
     local left_pad = 2
-    local mode_max = math.max(unpack(modes))
-    local bind_max = math.max(unpack(binds))
-    local expl_max = math.max(unpack(explanations))
     local right_pad = 2
+    local mode_max = math.max(unpack(modes)) + right_pad
+    local bind_max = math.max(unpack(binds)) + right_pad
+    local expl_max = math.max(unpack(explanations))
 
-    local total_width = left_pad + mode_max + bind_max + expl_max + right_pad
-    if total_width + 20 < width then
-        mode_max = mode_max + 5
-        bind_max = bind_max + 10
-    else
-        local diff = width - total_width
-        if diff > 0 then
-            mode_max = mode_max + math.floor(diff * 0.25)
-            bind_max = bind_max + math.floor(diff *0.5)
-        end
-    end
+    local total_width = mode_max + bind_max + expl_max + 2 * right_pad
     return { left_pad=left_pad, mode_max = mode_max, bind_max = bind_max, expl_max = expl_max, right_pad=right_pad }
 end
 

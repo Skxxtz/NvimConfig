@@ -116,8 +116,8 @@ M.keymaps = {
     { mode = "n",   bind = '==',                                                      explanation = "Filter [count] lines like with = filter." },
     { mode = "v",   bind = '={motion}',                                               explanation = "Filter the highlighted lines like using the = filter. Formats {motion} lines." },
 
-    { mode = "cmd", bind = ':[range]s[ubstitute]/{pattern}/{string}/[flags] [count]', explanation = "For each line in [range], replace a match of {pattern} with {string}." },
-    { mode = "cmd", bind = ':[range]s[ubstitute] [flags] [count]',                    explanation = "Repeat last :s[ubstitute] with same search pattern and substitute string, but without the same flags. You may add [flags]." },
+    { mode = "cmd", bind = ':[range]s/{pattern}/{string}/ [count]',                   explanation = "For each line in [range], replace a match of {pattern} with {string}." },
+    { mode = "cmd", bind = ':[range]s [flags] [count]',                               explanation = "Repeat last :s[ubstitute] with same search pattern and substitute string, but without the same flags. You may add [flags]." },
     { mode = "cmd", bind = ':[range]~[&][flags] [count]',                             explanation = "Repeat last :s[ubstitute] with optional " },
     { mode = "cmd", bind = '&',                                                       explanation = "Synonym for `:s[ubstitute]`. Note that the flags are not remembered." },
     { mode = "cmd", bind = '&-default',                                               explanation = "Mapped to ':&&<CR>' by default." },
@@ -126,7 +126,7 @@ M.keymaps = {
     { mode = "cmd", bind = ':[range]sm[agic] ...',                                    explanation = "Same as `:s[ubstitute]`, but always use 'magic'." },
     { mode = "cmd", bind = '&&',                                                      explanation = "Repeat the last :s[ubstitute] with same pattern, substitute, and flags." },
 
-    { mode = "cmd", bind = ':[range]ret[ab][!] [new_tabstop]',                        explanation = "Replace all sequences of white-space containing <Tab> with new strings." },
+    { mode = "cmd", bind = ':[range]ret[!] [new_tabstop]',                            explanation = "Replace all sequences of white-space containing <Tab> with new strings." },
 
     { mode = "cmd", bind = ':reg[isters]',                                            explanation = "Display the type and content of all numbered and named registers." },
     { mode = "cmd", bind = ':reg[isters] {arg}',                                      explanation = "Display the type and content of a numbered or named register." },

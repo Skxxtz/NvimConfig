@@ -25,6 +25,8 @@ function CmdPallette.fzf(list, query)
     local letters = {}
     local unique_letters = {}
     query = query:gsub("^%s*(.-)%s*$", "%1")
+
+    -- Create a set of unique letters
     for i = 1, #query do
         local letter = query:sub(i, i)
         letters[letter] = 0
@@ -32,12 +34,14 @@ function CmdPallette.fzf(list, query)
     for key, _ in pairs(letters) do
         table.insert(unique_letters, key)
     end
-    if table.concat(unique_letters) ~= "" then
-        local pattern = string.format("[^%s]", table.concat(unique_letters, ""))
+
+    local search_string = table.concat(unique_letters)
+    if search_string ~= "" then
+        local pattern = string.format("[^%s]", helpers.escape_pattern(search_string))
         for _, row in ipairs(list) do
             local explanation = string.lower(row.explanation)
             local hot_explanation = explanation:gsub(pattern, "")
-            local cold_explanation = explanation:gsub(pattern, "0")
+            local cold_explanation = explanation:gsub(pattern, "0") --vector where everything else than query is 0
             local pattern_match = string.find(hot_explanation, query, 1, true)
             if pattern_match then
                 local indices = {}
@@ -73,6 +77,9 @@ function CmdPallette:Show()
     vim.bo[result_buf].filetype = "CommandPallette"
     vim.bo[prompt_buf].filetype = "CommandPallette"
     vim.bo[result_buf].modifiable = true
+
+    vim.wo[result_win].foldmethod = "manual"
+
     vim.api.nvim_feedkeys("i", "n", false)
 
     helpers.Draw({""}, result_buf, paddings, result_wid)
