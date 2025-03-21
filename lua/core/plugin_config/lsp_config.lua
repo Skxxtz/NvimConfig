@@ -27,8 +27,8 @@ lspconfig.lua_ls.setup {
         },
     }
 }
-lspconfig.cssls.setup({})
 lspconfig.html.setup({})
+lspconfig.cssls.setup({})
 lspconfig.tailwindcss.setup({})
 lspconfig.rust_analyzer.setup({})
 lspconfig.clangd.setup({})
@@ -36,6 +36,8 @@ lspconfig.pyright.setup({})
 lspconfig.djlsp.setup({})
 lspconfig.ts_ls.setup({})
 lspconfig.jinja_lsp.setup({})
+lspconfig.emmet_language_server.setup({})
+
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),

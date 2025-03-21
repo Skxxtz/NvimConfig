@@ -7,6 +7,7 @@ function M.AttatchEvents(prompt_buf, prompt_win, result_buf, result_win, padding
         buffer = prompt_buf,
         group = "CmdPalletteGroup",
         callback = function()
+            vim.api.nvim_win_set_cursor(result_win, {1,0})
             local search_term = vim.api.nvim_buf_get_lines(prompt_buf, 0, -1, false)
             M.Draw(search_term, result_buf, paddings, result_wid)
         end
@@ -98,10 +99,9 @@ function M.format(results, padding, width)
         for _, row in ipairs(results) do
             local new_indices = {}
             if total_width > width then
-                local line1 = row.explanation
-                local line2 = string.format("%-10s%-20s", row.mode, row.bind)
-                table.insert(lines, line1)
-                table.insert(lines, line2)
+                local format_str = string.format("%%-10s%%-%ds", p.bind_max)
+                local line2 = string.format(format_str, row.mode, row.bind)
+                table.insert(lines, line2 .. row.explanation)
                 table.insert(lines, "")
                 table.insert(syntax_cols, row.indices)
                 table.insert(syntax_cols, {})

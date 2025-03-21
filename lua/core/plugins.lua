@@ -1,4 +1,5 @@
 require("lazy").setup({
+    -- Themes
     { "EdenEast/nightfox.nvim", name = "nightfox",   priority = 998 },
     { "catppuccin/nvim",        name = "catppuccin", priority = 999 },
     { "rose-pine/nvim",         name = "rose-pine",  priority = 1000 },

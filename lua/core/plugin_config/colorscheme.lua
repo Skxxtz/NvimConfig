@@ -35,11 +35,15 @@ require("nightfox").setup({
         transparent = true,
     }
 })
+
 table.insert(THEMES, "nightfox")
 REVERSE_THEME["nightfox"] = #THEMES
 
+-- Fox THEME:
 table.insert(THEMES, "carbonfox")
 REVERSE_THEME["carbonfox"] = #THEMES
+table.insert(THEMES, "nordfox")
+REVERSE_THEME["nordfox"] = #THEMES
 
 -- ZELLNER THEME:
 table.insert(THEMES, "zellner")

@@ -65,6 +65,8 @@ vim.keymap.set("n", "<leader>ü", function()
         vim.cmd(command)
     elseif extension == "sh" and UserSettings.Os.Platform ~= "Windows_NT" then
         vim.cmd(string.format("!chmod +x %s", current_file))
+    elseif extension == "ts" then
+        vim.cmd("!npx tsc")
     end
 end, { silent = true, desc="Compiles or makes executable all rs, c++, sh files." })
 
