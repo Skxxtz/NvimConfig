@@ -93,5 +93,7 @@ function RunCompiledProgram()
         vim.cmd(string.format("! python %s.py", file))
     elseif extension == "sh" and UserSettings.Os.Platform ~= "Windows_NT" then
         vim.cmd(string.format("! %s.%s", file, extension))
+    elseif extension == "ts" and UserSettings.Os.Platform ~= "Windows_NT" then
+        vim.cmd("npx tsc")
     end
 end

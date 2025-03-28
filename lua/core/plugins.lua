@@ -1,4 +1,7 @@
 require("lazy").setup({
+    -- DEVELOPMENT
+    {dir = "~/plugins/skxxtz-git.nvim"},
+
     -- Themes
     { "EdenEast/nightfox.nvim", name = "nightfox",   priority = 998 },
     { "catppuccin/nvim",        name = "catppuccin", priority = 999 },
