@@ -17,7 +17,7 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     "tpope/vim-fugitive",
     'tpope/vim-surround',
-    "theprimeagen/harpoon",
+    -- "theprimeagen/harpoon",
     { "lukas-reineke/indent-blankline.nvim",       main = "ibl", opts = {} },
     -- completion
     "windwp/nvim-autopairs",

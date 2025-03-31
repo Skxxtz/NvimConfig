@@ -26,26 +26,6 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz", {desc="Quick fix navigation
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], {desc="Replace all occurrences of word under cursor."})
 
-vim.keymap.set("n", "<leader>gc", function()
-    vim.fn.system("git add .")
-    local commit = vim.fn.input("commit message: ")
-    local output = vim.fn.system(string.format('git commit -m "%s"', commit))
-    PrintOutput(output)
-end, { silent = true, desc="Git add all and commit with message."})
-
-vim.keymap.set("n", "<leader>gp", function()
-    local output = vim.fn.system("git push");
-    PrintOutput(output)
-end, { silent = true, desc="Git push" })
-
-vim.keymap.set("n", "<leader>get", function()
-    vim.fn.system("git stash");
-    local output = vim.fn.system("git pull --rebase");
-    vim.fn.system("git stash pop");
-    PrintOutput(output)
-end, { silent = true, desc="Git stash current edits and pull from remote." })
-
-
 vim.keymap.set("n", "<leader>ö", ":lua RunCompiledProgram()<CR>", { silent = true, desc="Runs py, rs, c++, sh programs (if compiled)." })
 
 vim.keymap.set("n", "<leader>ü", function()
