@@ -15,9 +15,6 @@ function CmdPallette:init()
     vim.api.nvim_create_user_command("CmdPalletteShow", function()
         self:Show()
     end, {})
-    vim.keymap.set("n", "<leader>oc", function()
-        vim.cmd(":CmdPalletteShow")
-    end)
 end
 
 function CmdPallette.fzf(list, query)
