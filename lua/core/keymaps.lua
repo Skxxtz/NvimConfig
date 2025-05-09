@@ -53,6 +53,7 @@ set("i", "<A-;>", "<Esc>miA;<Esc>`ii")
 
 -- Format JSON files
 set("n", "<C-H>", "<cmd>:%!python -m json.tool<CR>", {desc="Uses python to format json files"})
+set("v", "<C-H>", ":'<,'>!python3 -m json.tool<CR>", {desc="Uses python to format json files"})
 
 
 -- Change text without putting it into a register
