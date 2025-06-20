@@ -35,6 +35,8 @@ require("lazy").setup({
     "rafamadriz/friendly-snippets",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "jay-babu/mason-null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     "neovim/nvim-lspconfig",
     {
         'nvim-telescope/telescope.nvim',

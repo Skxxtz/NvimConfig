@@ -48,6 +48,17 @@ if UserSettings.FormatOnSave then
     })
 end
 
+vim.api.nvim_create_autocmd("BufReadPost", {
+    pattern = "*",
+    callback = function()
+        local mark = vim.api.nvim_buf_get_mark(0, '"')
+        local lcount = vim.api.nvim_buf_line_count(0)
+        if mark[1] > 1 and mark[1] <= lcount then
+            vim.api.nvim_win_set_cursor(0, { mark[1], mark[2] })
+        end
+    end,
+})
+
 -- Initialize Themes
 if vim.g.current_theme == nil then
     vim.g.current_theme = ReadTheme() or 3

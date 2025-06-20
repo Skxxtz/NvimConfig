@@ -17,6 +17,8 @@ set("n", "<leader>O","printf('m%sO<ESC>``', v:count1)", {expr = true, desc = "In
 
 set("n", "G", "Gzz", {desc = "Jump to the bottom with the cursor in the middle."})
 
+
+-- set("n", "p", '"0p`[v`]', {desc="Paste and reselect the pasted text"})
 set("x", "<leader>p", "\"_dP", {desc="Put text [from register x] before the cursor without adding a replaced string [into register x].."})
 
 set("n", "<leader>y", "\"+y", {desc="Yank into system clipboard."})
@@ -49,11 +51,13 @@ for _, ch in ipairs(undo_ch) do
 end
 
 -- Add semicolon at the line end
-set("i", "<A-;>", "<Esc>miA;<Esc>`ii")
+set("i", "<C-,>", "<Esc>miA;<Esc>`ia", {desc="Sets a semicolon to the end of the current line."})
+set("n", "<C-,>", "<Esc>miA;<Esc>`i", {desc="Sets a semicolon to the end of the current line."})
+
 
 -- Format JSON files
-set("n", "<C-H>", "<cmd>:%!python -m json.tool<CR>", {desc="Uses python to format json files"})
-set("v", "<C-H>", ":'<,'>!python3 -m json.tool<CR>", {desc="Uses python to format json files"})
+set("n", "<C-H>", "<cmd>FormatJSON<CR>", {desc="Uses python to format json files"})
+set("v", "<C-H>", "<cmd>FormatJSON<CR>", {desc="Uses python to format json files"})
 
 
 -- Change text without putting it into a register
@@ -61,6 +65,7 @@ set("n", "c", '"_c')
 set("x", "c", '"_c')
 set("n", "cc", '"_cc')
 set("n", "C", '"_C')
+set("n", "<A-d>", '"_cc')
 
 -- Switch Windows (also build habit to use hjkl)
 set("n", "<left>", "<c-w>h")
