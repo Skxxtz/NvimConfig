@@ -1,6 +1,7 @@
 local set = vim.keymap.set
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
 set("n", "<leader>pv", vim.cmd.Ex)
 
 set("v", "J", ":m '>+1<CR>gv=gv", {desc = "Move line(s) down one line."})
