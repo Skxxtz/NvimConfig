@@ -16,7 +16,10 @@ cmp.setup({
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-o>'] = cmp.mapping.complete(),
-        ['<C-CR>'] = cmp.mapping.abort(),
+        ['<C-CR>'] = cmp.mapping(function(_)
+            cmp.abort()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, true, true), "n", true)
+        end, { "i", "s" }),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
     }),
     snippet = {
