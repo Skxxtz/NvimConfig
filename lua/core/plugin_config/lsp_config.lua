@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "emmet_language_server", "rust_analyzer", "clangd", "cssls", "html", "tailwindcss", "pyright", "ts_ls" }
+    ensure_installed = { "emmet_language_server", "rust_analyzer", "clangd", "cssls", "html", "tailwindcss", "pyright", "ts_ls", "lua_ls" }
 })
 
 local lspconfig = require('lspconfig')

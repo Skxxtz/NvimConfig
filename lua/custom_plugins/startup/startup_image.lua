@@ -30,16 +30,12 @@ end
 
 local function ColorLinesVert(line_count)
     vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.StartUpPlugin.AccentColor })
-    for i = 0, line_count do
-        vim.api.nvim_buf_add_highlight(0, -1, "Green", i, 0, -1)
-    end
+    vim.hl.range(0, -1, "Green", {0, 0}, {line_count, -1})
 end
 
 local function ColorLinesHor(line_count, col_end)
     vim.api.nvim_set_hl(0, "Green", { fg = UserSettings.StartUpPlugin.AccentColor})
-    for i = 0, line_count do
-        vim.api.nvim_buf_add_highlight(0, -1, "Green", i, 0, col_end)
-    end
+    vim.hl.range(0, -1, "Green", {0, 0}, {line_count, col_end})
 end
 
 local function AddKeybinds()
@@ -71,8 +67,6 @@ local function Draw(width, height, header_image, signiture, padding, options)
         local new_image = {}
         local new_options = {}
         local new_content = {}
-        local image_width = math.max(header_image_width, signiture_width)
-        local side_padding = math.floor((width - (image_width + options_width)) / 3)
         local middle =  width / 2
 
         for _,line in ipairs(header_image) do

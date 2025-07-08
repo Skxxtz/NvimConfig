@@ -78,7 +78,7 @@ set("n", "<down>", "<c-w>j")
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "qf",
     callback = function()
-        vim.keymap.set("n", "<esc>", ":cclose<CR>", { buffer = true, silent = true })
+        set("n", "<esc>", ":cclose<CR>", { buffer = true, silent = true })
     end
 })
 
